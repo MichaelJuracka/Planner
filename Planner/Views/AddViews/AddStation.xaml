@@ -1,0 +1,51 @@
+﻿<Window x:Class="Planner.Views.AddViews.AddStation"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Planner.Views.AddViews"
+        mc:Ignorable="d"
+        Title="Nová stanice" Height="500" Width="700" MaxHeight="500" MaxWidth="700" MinHeight="500" MinWidth="700" 
+        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <Grid Margin="5" TextBlock.TextAlignment="Right" TextBlock.FontWeight="Medium" TextBlock.FontSize="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Název Stanice:" Grid.Row="0" VerticalAlignment="Center" />
+        <TextBlock Text="Čas Odjezdu:" Grid.Row="1" VerticalAlignment="Center" />
+        <TextBlock Text="Místo Odjezdu:" Grid.Row="2" VerticalAlignment="Center" />
+        <TextBlock Text="Popis:" Grid.Row="3" VerticalAlignment="Center" />
+        <TextBlock Text="GPS Souřadnice:" Grid.Row="4" VerticalAlignment="Center" />
+        <TextBlock Text="Je stanice nástupní stanicí?:" Grid.Row="5" VerticalAlignment="Center" />
+        <TextBlock Text="Stát:" Grid.Row="6" VerticalAlignment="Center"/>
+        <TextBlock Text="Oblast:" Grid.Row="7" VerticalAlignment="Center" />
+
+        <TextBox Name="nameTextbox" Margin="5" Grid.Column="1" Grid.Row="0" TextAlignment="Left"/>
+        <TextBox Name="departureTimeTextbox" Margin="5" Grid.Column="1" Grid.Row="1" TextAlignment="Left"/>
+        <TextBox Name="departurePlaceTextbox" Margin="5" Grid.Column="1" Grid.Row="2" TextAlignment="Left" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible"/>
+        <TextBox Name="descriptionTextbox" Margin="5" Grid.Column="1" Grid.Row="3" TextAlignment="Left" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible"/>
+        <TextBox Name="gpsTextbox" Margin="5" Grid.Column="1" Grid.Row="4" TextAlignment="Left"/>
+        <CheckBox IsChecked="True" Name="isInCzeCheckBox" Margin="5" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center"/>
+        <ComboBox Name="stateCombobox" Grid.Column="1" Grid.Row="6" Margin="5" ItemsSource="{Binding State}" SelectionChanged="stateCombobox_SelectionChanged"></ComboBox>
+        <ComboBox Name="regionCombobox" Grid.Column="1" Grid.Row="7" Margin="5" ItemsSource="{Binding Region}"></ComboBox>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="8" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" >
+            <Button Name="addButton" Content="Přidat" Padding="10 5 10 5" Click="addButton_Click" IsDefault="True"/>
+            <Button Name="cancelButton" Content="Zrušit" Padding="10 5 10 5" Margin="8 0 0 0" Click="cancelButton_Click"/>
+        </StackPanel>
+
+    </Grid>
+</Window>

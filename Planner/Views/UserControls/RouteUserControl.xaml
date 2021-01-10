@@ -1,0 +1,152 @@
+﻿<UserControl x:Class="Planner.Views.UserControls.RouteUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Planner.Views.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="350"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Filter Grid-->
+        <Grid Grid.Row="0" Grid.Column="0" TextBlock.FontSize="14" TextBlock.FontWeight="Medium" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="320"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Termín" VerticalAlignment="Center"></TextBlock>
+            <TextBlock Text="Id" VerticalAlignment="Center" Grid.Row="1"></TextBlock>
+            <TextBlock Text="Stát" VerticalAlignment="Center" Grid.Row="2"></TextBlock>
+            <TextBlock Text="Oblast" VerticalAlignment="Center" Grid.Row="3"></TextBlock>
+            
+            <TextBlock Text="Objednávka vytvořena" VerticalAlignment="Center" Grid.Column="2" Grid.Row="0"></TextBlock>
+            <TextBlock Text="Seznamy vytvořeny" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1"></TextBlock>
+            <TextBlock Text="Svozová jízda" VerticalAlignment="Center" Grid.Column="2" Grid.Row="2"></TextBlock>
+
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Margin="5 0 0 0">
+                <DatePicker Name="fromDatePicker" VerticalAlignment="Center"></DatePicker>
+                <TextBlock Text=" - " VerticalAlignment="Center"></TextBlock>
+                <DatePicker Name="toDatePicker" VerticalAlignment="Center"></DatePicker>
+            </StackPanel>
+            <TextBox Name="filterIdTextBox" Grid.Row="1" Grid.Column="1" Margin="5" PreviewTextInput="filterIdTextBox_PreviewTextInput"></TextBox>
+            <ComboBox Name="filterStateComboBox" Grid.Column="1" Grid.Row="2" Margin="5" SelectionChanged="filterStateComboBox_SelectionChanged"></ComboBox>
+            <ComboBox Name="filterRegionComboBox" Grid.Column="1" Grid.Row="3" Margin="5" SelectionChanged="filterRegionComboBox_SelectionChanged"></ComboBox>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3">
+                <RadioButton Name="filterOrderCreatedRadioButton" Content="Ano"></RadioButton>
+                <RadioButton Name="filterOrderNotCreatedRadionButton" Content="Ne" Margin="4 0 0 0"></RadioButton>
+                <RadioButton Name="filterOrderRadioButton" Content="Nerozhoduje" IsChecked="True" Margin="4 0 0 0"></RadioButton>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3">
+                <RadioButton Name="filterAgendaCreatedRadionButton" Content="Ano"></RadioButton>
+                <RadioButton Name="filterAgendaNotCreatedRadioButton" Content="Ne" Margin="4 0 0 0"></RadioButton>
+                <RadioButton Name="filterAgendaRadioButton" Content="Nerozhoduje" Margin="4 0 0 0" IsChecked="True"></RadioButton>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="2" Grid.Column="3">
+                <RadioButton Name="filterBoardingRouteRadioButton" Content="Ano"></RadioButton>
+                <RadioButton Name="filterNotBoardingRouteRadioButton" Content="Ne" Margin="4 0 0 0"></RadioButton>
+                <RadioButton Name="filterBoardingRadioButton" Content="Nerozhoduje" Margin="4 0 0 0" IsChecked="True"></RadioButton>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="3" Grid.Column="3">
+                <CheckBox Content="Tam" IsChecked="True" Name="filterNotRouteBackCheckBox"></CheckBox>
+                <CheckBox Content="Zpět" IsChecked="True" Name="filterRouteBackCheckBox" Margin="6 0 0 0"></CheckBox>
+            </StackPanel>
+
+            <Button Content="Vyhledat" Name="filterButton" Grid.Column="0" Grid.Row="4" Padding="15 1 15 1" VerticalAlignment="Center" HorizontalAlignment="Right" Click="filterButton_Click" IsDefault="True"></Button> 
+             
+        </Grid>
+        
+        <DataGrid Name="routeDataGrid" Grid.Row="1" IsReadOnly="True" SelectionChanged="routeDataGrid_SelectionChanged" AutoGenerateColumns="False" SelectionMode="Single" AlternatingRowBackground="LightGray">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding RouteId}" Width="40"/>
+                <DataGridTextColumn Header="Datum odjezdu" Width="200" Binding="{Binding DepartureDate}"/>
+                <DataGridCheckBoxColumn Header="Cesta zpět" Width="80" Binding="{Binding RouteBack}"/>
+                <DataGridCheckBoxColumn Header="Reálná jízda" Width="90" Binding="{Binding IsRealRoute}"/>                
+                <DataGridCheckBoxColumn Header="Svoz" Width="80" Binding="{Binding BoardingRoute}"/>               
+                <DataGridTextColumn Header="Stát" Width="100" Binding="{Binding State}"/>
+                <DataGridTextColumn Header="Oblast" Width="100" Binding="{Binding Region}"/>
+                <DataGridTextColumn Header="Dopravce" Width="100" Binding="{Binding Provider}"/>
+                <DataGridTextColumn Header="Spz" Width="100" Binding="{Binding LicensePlate}"/>
+                <DataGridTextColumn Header="Typ autobusu" Width="100" Binding="{Binding BusType}"/>
+                <DataGridCheckBoxColumn Header="Zasedák" Width="80" Binding="{Binding AgendaCreated}"/>
+                <DataGridCheckBoxColumn Header="Objednávka" Width="80" Binding="{Binding OrderCreated}"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Detail" Name="detailContextMenu" Click="detailContextMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/detailIcon.ico"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Přidat cestujícího" Name="addPassengerContextMenu" Click="addPassengerContextMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/addPassengerIcon.ico"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Import cestujících" Name="importPassengersContextMenu" Click="importPassengersContextMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/importIcon.ico"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Odstranit" Name="deleteContextMenu" Click="deleteContextMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/deleteIcon.ico"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+
+        <!--Update Grid-->
+        <Grid Grid.RowSpan="2" Grid.Column="1" Name="routeGrid" TextBlock.TextAlignment="Left" TextBlock.FontSize="14" TextBlock.FontWeight="Medium" Margin="5 60 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="170"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Dopravce:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBlock Text="Spz:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBlock Text="Typ autobusu:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+
+            <ComboBox Name="providerComboBox" Margin="5" Grid.Column="1" Grid.Row="0" >
+                
+            </ComboBox>
+            <TextBox Name="licensePlateTextBox" Margin="5" Grid.Column="1" Grid.Row="1">
+                <TextBox.Text>
+                    <Binding Path="LicensePlate"></Binding>
+                </TextBox.Text>
+            </TextBox>
+            <ComboBox Name="busTypeComboBox" Margin="5" Grid.Column="1" Grid.Row="2">
+                
+            </ComboBox>
+
+            <Button Grid.ColumnSpan="2" Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Center" Content="Změnit" Name="updateButton" Click="updateButton_Click"></Button>
+        </Grid>
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,52 @@
+﻿<Window x:Class="Planner.Views.ChooseViews.ChooseStation"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Planner.Views.ChooseViews"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="ChooseStation" Height="580" Width="650" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="110"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="45"/>
+        </Grid.RowDefinitions>
+
+        <!--Filter-->
+        <Grid TextBlock.FontSize="14" TextBlock.FontWeight="Medium">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Název stanice" VerticalAlignment="Center"></TextBlock>
+            <TextBlock Text="Oblast" VerticalAlignment="Center" Grid.Row="1"></TextBlock>
+
+            <TextBox Name="filterNameTextBox" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" Width="250" HorizontalAlignment="Left"/>
+            <ComboBox Name="filterRegionComboBox" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Width="250" HorizontalAlignment="Left"/>
+
+            <Button Name="filterButton" Content="Vyhledat" Grid.Row="3" Padding="10 2 10 2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15 0 0 0" IsDefault="True" Click="filterButton_Click"/>
+        </Grid>
+
+        <DataGrid Grid.Row="1" IsReadOnly="True" Name="stationDataGrid" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Název" Width="*" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Čas odjezdu" Width="75" Binding="{Binding DepartureTime}"/>
+                <DataGridTextColumn Header="Gps" Width="*" Binding="{Binding Gps}"/>
+                <DataGridTextColumn Header="Oblast" Width="150" Binding="{Binding Region}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="2" TextBlock.FontSize="14" TextBlock.FontWeight="Medium">
+            <Button Name="submitButton" Content="Vybrat" Padding="10 5 10 5" Click="submitButton_Click" />
+            <Button Name="cancelButton" Content="Zrušit" Padding="10 5 10 5" Margin="8 0 0 0" Click="cancelButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

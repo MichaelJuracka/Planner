@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A0E153E6-23BB-44AA-B98E-D8283B325B7A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Planner.Data</RootNamespace>
+    <AssemblyName>Planner.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationDbContext.cs" />
+    <Compile Include="Interfaces\IBusTypeRepository.cs" />
+    <Compile Include="Interfaces\IExportRepository.cs" />
+    <Compile Include="Interfaces\IPassengerRepository.cs" />
+    <Compile Include="Interfaces\IProviderRepository.cs" />
+    <Compile Include="Interfaces\IRegionRepository.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IRouteRepository.cs" />
+    <Compile Include="Interfaces\IStateRepository.cs" />
+    <Compile Include="Interfaces\IStationRepository.cs" />
+    <Compile Include="Migrations\202012051443554_first.cs" />
+    <Compile Include="Migrations\202012051443554_first.Designer.cs">
+      <DependentUpon>202012051443554_first.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012051742443_stationrepair.cs" />
+    <Compile Include="Migrations\202012051742443_stationrepair.Designer.cs">
+      <DependentUpon>202012051742443_stationrepair.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012051759162_stationrepair2.cs" />
+    <Compile Include="Migrations\202012051759162_stationrepair2.Designer.cs">
+      <DependentUpon>202012051759162_stationrepair2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012051939089_StationRepair3.cs" />
+    <Compile Include="Migrations\202012051939089_StationRepair3.Designer.cs">
+      <DependentUpon>202012051939089_StationRepair3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012081347285_Update0812.cs" />
+    <Compile Include="Migrations\202012081347285_Update0812.Designer.cs">
+      <DependentUpon>202012081347285_Update0812.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012081356209_Update0812_2.cs" />
+    <Compile Include="Migrations\202012081356209_Update0812_2.Designer.cs">
+      <DependentUpon>202012081356209_Update0812_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012132125360_route_update.cs" />
+    <Compile Include="Migrations\202012132125360_route_update.Designer.cs">
+      <DependentUpon>202012132125360_route_update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012151838554_route_update_2.cs" />
+    <Compile Include="Migrations\202012151838554_route_update_2.Designer.cs">
+      <DependentUpon>202012151838554_route_update_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012161219251_passenger_update.cs" />
+    <Compile Include="Migrations\202012161219251_passenger_update.Designer.cs">
+      <DependentUpon>202012161219251_passenger_update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012172226265_passenger_update_3.cs" />
+    <Compile Include="Migrations\202012172226265_passenger_update_3.Designer.cs">
+      <DependentUpon>202012172226265_passenger_update_3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012231726538_route_passenger_update.cs" />
+    <Compile Include="Migrations\202012231726538_route_passenger_update.Designer.cs">
+      <DependentUpon>202012231726538_route_passenger_update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012241900015_remove_routeStations.cs" />
+    <Compile Include="Migrations\202012241900015_remove_routeStations.Designer.cs">
+      <DependentUpon>202012241900015_remove_routeStations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012241903079_Export.cs" />
+    <Compile Include="Migrations\202012241903079_Export.Designer.cs">
+      <DependentUpon>202012241903079_Export.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012241907502_Export1.cs" />
+    <Compile Include="Migrations\202012241907502_Export1.Designer.cs">
+      <DependentUpon>202012241907502_Export1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012260011534_update_Export.cs" />
+    <Compile Include="Migrations\202012260011534_update_Export.Designer.cs">
+      <DependentUpon>202012260011534_update_Export.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012281543571_Export_Name.cs" />
+    <Compile Include="Migrations\202012281543571_Export_Name.Designer.cs">
+      <DependentUpon>202012281543571_Export_Name.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012282051538_station_order.cs" />
+    <Compile Include="Migrations\202012282051538_station_order.Designer.cs">
+      <DependentUpon>202012282051538_station_order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\InitialData.cs" />
+    <Compile Include="Models\BusType.cs" />
+    <Compile Include="Models\Export.cs" />
+    <Compile Include="Models\Passenger.cs" />
+    <Compile Include="Models\Provider.cs" />
+    <Compile Include="Models\Region.cs" />
+    <Compile Include="Models\Route.cs" />
+    <Compile Include="Models\State.cs" />
+    <Compile Include="Models\Station.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\BusTypeRepository.cs" />
+    <Compile Include="Repositories\ExportRepository.cs" />
+    <Compile Include="Repositories\PassengerRepository.cs" />
+    <Compile Include="Repositories\ProviderRepository.cs" />
+    <Compile Include="Repositories\RegionRepository.cs" />
+    <Compile Include="Repositories\RouteRepository.cs" />
+    <Compile Include="Repositories\StateRepository.cs" />
+    <Compile Include="Repositories\StationRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202012051443554_first.resx">
+      <DependentUpon>202012051443554_first.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012051742443_stationrepair.resx">
+      <DependentUpon>202012051742443_stationrepair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012051759162_stationrepair2.resx">
+      <DependentUpon>202012051759162_stationrepair2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012051939089_StationRepair3.resx">
+      <DependentUpon>202012051939089_StationRepair3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012081347285_Update0812.resx">
+      <DependentUpon>202012081347285_Update0812.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012081356209_Update0812_2.resx">
+      <DependentUpon>202012081356209_Update0812_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012132125360_route_update.resx">
+      <DependentUpon>202012132125360_route_update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012151838554_route_update_2.resx">
+      <DependentUpon>202012151838554_route_update_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012161219251_passenger_update.resx">
+      <DependentUpon>202012161219251_passenger_update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012172226265_passenger_update_3.resx">
+      <DependentUpon>202012172226265_passenger_update_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012231726538_route_passenger_update.resx">
+      <DependentUpon>202012231726538_route_passenger_update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012241900015_remove_routeStations.resx">
+      <DependentUpon>202012241900015_remove_routeStations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012241903079_Export.resx">
+      <DependentUpon>202012241903079_Export.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012241907502_Export1.resx">
+      <DependentUpon>202012241907502_Export1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012260011534_update_Export.resx">
+      <DependentUpon>202012260011534_update_Export.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012281543571_Export_Name.resx">
+      <DependentUpon>202012281543571_Export_Name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012282051538_station_order.resx">
+      <DependentUpon>202012282051538_station_order.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

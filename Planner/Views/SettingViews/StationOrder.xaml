@@ -1,0 +1,30 @@
+﻿<Window x:Class="Planner.Views.SettingViews.StationOrder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Planner.Views.SettingViews"
+        mc:Ignorable="d"
+        Title="StationOrder" Height="450" Width="800">
+    <Grid TextBlock.FontSize="14" TextBlock.FontWeight="Medium" Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="Stát:" Margin="0 0 10 0"/>
+            <ComboBox Name="stateComboBox" Width="200" SelectionChanged="stateComboBox_SelectionChanged"/>
+            <TextBlock Text="Oblast:" Margin="30 0 10 0"/>
+            <ComboBox Name="regionComboBox" Width="200" SelectionChanged="regionComboBox_SelectionChanged"/>
+        </StackPanel>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <StackPanel Orientation="Vertical" Name="stationStackPanel">
+            </StackPanel>
+        </ScrollViewer>
+
+        <Button Content="Uložit" Name="saveButton" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="2" Margin="30 0 0 0" Padding="7 2" Click="saveButton_Click"/>
+    </Grid>
+</Window>

@@ -1,0 +1,108 @@
+﻿<Window x:Class="Planner.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Planner"
+        xmlns:CustomUC="clr-namespace:Planner.Views.UserControls"
+        mc:Ignorable="d"
+        Title="Planovač jízd" Height="900" Width="1300" Loaded="Window_Loaded"
+        WindowState="Maximized"
+        >
+    <Grid Margin="5 0 5 5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <Image Source="/Images/busPng.png" VerticalAlignment="Center" HorizontalAlignment="Center" Name="busImage" Grid.Row="1" Height="550" Width="450"/>
+
+        <Menu Background="Transparent" BorderBrush="Black" Grid.Row="0" >
+            <MenuItem Name="Home" Click="Home_Click">
+                <MenuItem.Icon>
+                    <Image Source="/Images/homeIcon.ico"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Nový">
+                <MenuItem.Icon>
+                    <Image Source="/Images/addIcon.ico"/>
+                </MenuItem.Icon>
+                <MenuItem Header="Nová jízda" Name="newRoute" Click="newRoute_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/routeIcon.ico"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Nový cestující" Name="newPassenger" Click="newPassenger_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/addPassengerIcon.ico"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Nová zastávka" Name="newStation" Click="newStation_Click">
+                </MenuItem>
+                <MenuItem Header="Import">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/importIcon.ico"/>
+                    </MenuItem.Icon>
+                    <MenuItem Header="Import cestujících" Name="importPassengersContextMenu" Click="importPassengersContextMenu_Click">
+                    </MenuItem>
+                    <MenuItem Header="Import zastávek" Name="importStationContextMenu" Click="importStationContextMenu_Click">
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Další">
+                    <MenuItem Header="Přidat stát" Name="newState" Click="newState_Click">
+                    </MenuItem>
+                    <MenuItem Header="Přidat oblast" Name="newRegion" Click="newRegion_Click">
+                    </MenuItem>
+                    <MenuItem Header="Přidat dopravce" Name="newProvider" Click="newProvider_Click">
+                    </MenuItem>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Zobrazit">
+                <MenuItem.Icon>
+                    <Image Source="/Images/showIcon.ico"/>
+                </MenuItem.Icon>
+                <MenuItem Header="Jízdy" Name="uCRouteMenu" Click="uCRouteMenu_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/routeIcon.ico"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Cestující" Name="uCPassengerMenu" Click="uCPassengerMenu_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/passengerIcon.ico"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Stanice" Name="uCStationMenu" Click="uCStationMenu_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/stationIcon.ico"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Státy, Oblasti, Dopravci" Name="uCStateRegionProviderMenu" Click="uCStateRegionProviderMenu_Click" >
+                    <MenuItem.Icon>
+                        <Image Source="/Images/stateIcon.ico"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Nastavení">
+                <MenuItem.Icon>
+                        <Image Source="/Images/settingIcon.ico"/>
+                    </MenuItem.Icon>
+                <MenuItem Header="Pořadí stanic" Name="stationOrderTabControl" Click="stationOrderTabControl_Click">
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <!--Grid pro UserControls-->
+        <Grid Grid.Row="1">
+            <CustomUC:RouteUserControl x:Name="ucRoute" Visibility="Hidden"></CustomUC:RouteUserControl>
+            <CustomUC:StationUserControl x:Name="ucStation" Visibility="Hidden"></CustomUC:StationUserControl>
+            <CustomUC:StateRegionProviderUserControl x:Name="uCStateRegionProvider" Visibility="Hidden"></CustomUC:StateRegionProviderUserControl>
+            <CustomUC:PassengerUserControl x:Name="uCPassenger" Visibility="Hidden"></CustomUC:PassengerUserControl>
+            
+        </Grid>
+
+        <Grid Visibility="Visible" Background="LightGray" Grid.Row="2">
+            <!--Místo pro ProgressBar and other shits like stats?-->
+        </Grid>
+    </Grid>
+</Window>

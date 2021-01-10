@@ -1,0 +1,33 @@
+﻿<Window x:Class="Planner.Views.AddViews.AddRegion"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Planner.Views.AddViews"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Nová oblast" Height="250" Width="450" MaxHeight="250" MaxWidth="450" MinHeight="250" MinWidth="450" Loaded="Window_Loaded">
+    <Grid TextBlock.FontSize="14" TextBlock.FontWeight="Medium">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Název" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 6 0"></TextBlock>
+        <TextBlock Text="Stát" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 6 0"></TextBlock>
+
+        <TextBox Grid.Row="1" Grid.Column="1" Name="nameTextBox" Margin="0 0 7 0" VerticalAlignment="Center"></TextBox>
+        <ComboBox Grid.Row="2" Grid.Column="1" Name="stateComboBox" Margin="0 0 7 0" VerticalAlignment="Center" ItemsSource="{Binding State}"></ComboBox>
+        
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button Name="addButton" Content="Přidat" Padding="10 5 10 5" Click="addButton_Click" IsDefault="True"/>
+            <Button Name="cancelButton" Content="Zrušit" Padding="10 5 10 5" Margin="8 0 0 0" Click="cancelButton_Click" />
+        </StackPanel>
+    </Grid>
+</Window>
