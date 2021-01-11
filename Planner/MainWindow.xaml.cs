@@ -51,6 +51,7 @@ namespace Planner
         public ObservableCollection<Provider> FilterProviders { get; set; }
         public ObservableCollection<BusType> BusTypes { get; set; }
         public ObservableCollection<Passenger> Passengers { get; set; }
+        public Dictionary<List<Passenger>, Route> PassengersDictionary { get; set; }
         #endregion
 
         private readonly BackgroundWorker backgroundWorker;
