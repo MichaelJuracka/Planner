@@ -3,10 +3,6 @@ using Planner.Data.Interfaces;
 using Planner.Data.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Planner.Business.Managers
 {

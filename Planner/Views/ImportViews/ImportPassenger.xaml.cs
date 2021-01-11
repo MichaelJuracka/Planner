@@ -4,6 +4,7 @@ using Planner.Data.Models;
 using Planner.Views.ChooseViews;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -56,23 +57,6 @@ namespace Planner.Views.ImportViews
                 filePathTextBox.Text = openFileDialog.FileName;
             }
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (filePath != null)
-            {
-                try
-                {
-                    officeManager.ImportPassengers(filePath, route, mainWindow.Stations.Where(x => x.BoardingStation), mainWindow.Stations.Where(x => x.BoardingStation == false)).ForEach(x => mainWindow.Passengers.Add(x));
-                    Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-            else
-                MessageBox.Show("Vyberte soubor");
-        }
         private void chooseRouteButton_Click(object sender, RoutedEventArgs e)
         {
             ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow);
@@ -84,6 +68,34 @@ namespace Planner.Views.ImportViews
                 routeTextBlock.Text = chooseRoute.route.ToString();
                 routeTextBlock.Visibility = Visibility.Visible;
             }
+        }
+
+        private void submitButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (filePath != null)
+            {
+                try
+                {
+                    var importedPassengers = officeManager.ImportPassengers(filePath, route, mainWindow.Stations.Where(x => x.BoardingStation), mainWindow.Stations.Where(x => x.BoardingStation == false));
+                        //.ForEach(x => mainWindow.Passengers.Add(x));
+                    mainWindow.PassengersDictionary.TryGetValue(route, out var collection);
+                    ObservableCollection<Passenger> passengers = new ObservableCollection<Passenger>(collection);
+                    foreach (var p in importedPassengers)
+                    {
+                        mainWindow.Passengers.Add(p);
+                        passengers.Add(p);
+                    }
+                    mainWindow.PassengersDictionary[route] = passengers;
+
+                    Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+                MessageBox.Show("Vyberte soubor");
         }
     }
 }

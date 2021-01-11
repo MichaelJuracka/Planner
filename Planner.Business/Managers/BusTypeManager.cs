@@ -1,12 +1,7 @@
 ﻿using Planner.Business.Interfaces;
 using Planner.Data.Interfaces;
 using Planner.Data.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Planner.Business.Managers
 {

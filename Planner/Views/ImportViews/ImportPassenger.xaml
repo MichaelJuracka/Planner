@@ -25,6 +25,6 @@
                 <Button Name="chooseRouteButton" Content="Vyber jízdu" Padding="10 0 10 0" HorizontalAlignment="Right" Click="chooseRouteButton_Click"/>
             </StackPanel>
         </StackPanel>
-        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Import" Grid.Row="2" Padding="10 0 10 0" Click="Button_Click" FontWeight="Medium" FontSize="14"/>
+        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Import" Grid.Row="2" Padding="10 0 10 0" Name="submitButton" FontWeight="Medium" FontSize="14" Click="submitButton_Click"/>
     </Grid>
 </Window>

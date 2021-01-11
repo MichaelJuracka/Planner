@@ -2,9 +2,9 @@
 using Planner.Data.Models;
 using Planner.Data.Interfaces;
 using System;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace Planner.Business.Managers
 {

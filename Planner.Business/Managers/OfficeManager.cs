@@ -8,9 +8,6 @@ using System.IO;
 using System.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 using Word = Microsoft.Office.Interop.Word;
-using Microsoft.Win32;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Planner.Business.Managers
 {

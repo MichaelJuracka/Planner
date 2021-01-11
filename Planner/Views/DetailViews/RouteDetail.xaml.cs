@@ -58,7 +58,7 @@ namespace Planner.Views.DetailViews
             Title = route.ToString();
             routeTextBlock.Text = route.ToString();
 
-            ItemSourceForGrid();
+            passengerDataGrid.ItemsSource = GetPassengerCollection(route);
 
             if (route.IsRealRoute || route.BoardingRoute)
             {
@@ -132,15 +132,7 @@ namespace Planner.Views.DetailViews
         private void filterButton_Click(object sender, RoutedEventArgs e)
         {
             var region = (Region)filterRegionComboBox.SelectedItem;
-            IEnumerable<Passenger> passengers;
-            if (route.IsRealRoute)
-                passengers = mainWindow.Passengers.Where(x => x.RealRouteId == route.RouteId);
-            else if (route.BoardingRoute)
-                passengers = mainWindow.Passengers.Where(x => x.BoardingRouteId == route.RouteId);
-            else
-                passengers = mainWindow.Passengers.Where(x => x.RouteId == route.RouteId);
-
-            passengerDataGrid.ItemsSource = passengerManager.FilterPassengers(passengers, filterIdTextBox.Text, filterBusinessCaseTextBox.Text, filterNameTextBox.Text, filterSecondNameTextBox.Text, region: region);
+            passengerDataGrid.ItemsSource = SortPassengersByStations(route, passengerManager.FilterPassengers(GetPassengerCollection(route), filterIdTextBox.Text, filterBusinessCaseTextBox.Text, filterNameTextBox.Text, filterSecondNameTextBox.Text, region: region));
         }
         private void filterBusinessCaseTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -182,6 +174,7 @@ namespace Planner.Views.DetailViews
             {
                 passenger = passengerManager.Update(passenger, firstNameTextBox.Text, secondNameTextBox.Text, phoneTextBox.Text, emailTextBox.Text, additionalInfoTextBox.Text, boardingStation, exitStation);
                 passengerDataGrid.SelectedItem = passenger;
+
                 passengerDataGrid.Items.Refresh();
                 RenderStationCounts();
             }
@@ -206,7 +199,7 @@ namespace Planner.Views.DetailViews
             {
                 foreach (Passenger p in passengers)
                     passengerManager.RemoveRoute(p, true, false);
-                ItemSourceForGrid();
+                passengerDataGrid.ItemsSource = GetPassengerCollection(route);
             }
             catch (Exception ex)
             {
@@ -226,7 +219,7 @@ namespace Planner.Views.DetailViews
             {
                 foreach (Passenger p in passengers)
                     passengerManager.RemoveRoute(p, false, true);
-                ItemSourceForGrid();
+                passengerDataGrid.ItemsSource = GetPassengerCollection(route);
             }
             catch (Exception ex)
             {
@@ -243,6 +236,7 @@ namespace Planner.Views.DetailViews
             {
                 ImportPassenger importPassenger = new ImportPassenger(routeManager, officeManager, mainWindow, route);
                 importPassenger.ShowDialog();
+                passengerDataGrid.ItemsSource = GetPassengerCollection(route);
             }
         }
         private void passengerAddButton_Click(object sender, RoutedEventArgs e)
@@ -251,6 +245,7 @@ namespace Planner.Views.DetailViews
             {
                 AddPassenger addPassenger = new AddPassenger(passengerManager, routeManager, stationManager, mainWindow, route);
                 addPassenger.ShowDialog();
+                passengerDataGrid.ItemsSource = GetPassengerCollection(route);
             }
         } 
         #endregion
@@ -270,7 +265,7 @@ namespace Planner.Views.DetailViews
 
             if (chooseRoute.route != null && chooseRoute.route.BusTypeId != null)
             {
-                if (chooseRoute.route.BusType.NumberOfSeats < passengers.Count + mainWindow.Passengers.Where(x => x.RealRouteId == chooseRoute.route.RouteId).Count())
+                if (chooseRoute.route.BusType.NumberOfSeats < passengers.Count + GetPassengerCollection(chooseRoute.route).Count())
                 {
                     MessageBox.Show("V této jízdě je příliš cestujících");
                     return;
@@ -330,16 +325,6 @@ namespace Planner.Views.DetailViews
             if (route.IsRealRoute)
                 fileName += $", {route.LicensePlate}";
 
-            IEnumerable<Passenger> passengers;
-
-            if (route.IsRealRoute)
-                passengers = mainWindow.Passengers.Where(x => x.RealRouteId == route.RouteId).OrderBy(x => x.ExitStation.Order);
-            else if (route.BoardingRoute)
-                passengers = mainWindow.Passengers.Where(x => x.BoardingRouteId == route.RouteId).OrderBy(x => x.BoardingStation.Order);
-            else
-                passengers = mainWindow.Passengers.Where(x => x.RouteId == route.RouteId).OrderBy(x => x.ExitStation.Order);
-
-
             SaveFileDialog saveFileDialog = new SaveFileDialog()
             {
                 Filter = "Excel Workbook (*.xls;*.xlsx)|*.xls;*.xlsx|All files (*.*)|*.*"
@@ -355,7 +340,7 @@ namespace Planner.Views.DetailViews
                     if (File.Exists(saveFileDialog.FileName))
                         File.Delete(saveFileDialog.FileName);
 
-                    officeManager.RouteList(passengers, saveFileDialog.FileName, route.RouteId, fileName, route.IsRealRoute);
+                    officeManager.RouteList(GetPassengerCollection(route), saveFileDialog.FileName, route.RouteId, fileName, route.IsRealRoute);
                     RenderExports();
                     /* až u zasedáků
                     routeManager.UpdateAgenda(route, true);
@@ -397,9 +382,9 @@ namespace Planner.Views.DetailViews
                 {
                     try
                     {
-                        officeManager.UpdateOrder(saveFileDialog.FileName, fileName, route, mainWindow.Passengers.Where(x => x.RealRouteId == route.RouteId).OrderBy(x => x.ExitStation.Order), mainWindow.Passengers.Where(x => x.RealRouteId == chooseRoute.route.RouteId).OrderByDescending(x => x.ExitStation.Order));
+                        officeManager.UpdateOrder(saveFileDialog.FileName, fileName, route, GetPassengerCollection(route), GetPassengerCollection(chooseRoute.route));
                         routeManager.UpdateOrder(route, true);
-                        mainWindow.Routes.FirstOrDefault(x => x.RouteId == route.RouteId).AgendaCreated = true;
+                        mainWindow.Routes.FirstOrDefault(x => x.RouteId == route.RouteId).OrderCreated = true;
                         dataGrid.Items.Refresh();
                         RenderExports();
                     }
@@ -432,9 +417,9 @@ namespace Planner.Views.DetailViews
                 {
                     try
                     {
-                        officeManager.UpdateOrderWord(saveFileDialog.FileName, fileName, route, mainWindow.Passengers.Where(x => x.BoardingRouteId == route.RouteId).OrderBy(x => x.DepartureTime).ThenBy(x => x.BusinessCase));
+                        officeManager.UpdateOrderWord(saveFileDialog.FileName, fileName, route, GetPassengerCollection(route));
                         routeManager.UpdateOrder(route, true);
-                        mainWindow.Routes.FirstOrDefault(XamlGeneratedNamespace => XamlGeneratedNamespace.RouteId == route.RouteId).AgendaCreated = true;
+                        mainWindow.Routes.FirstOrDefault(x => x.RouteId == route.RouteId).OrderCreated = true;
                         dataGrid.Items.Refresh();
                         RenderExports();
                     }
@@ -457,108 +442,37 @@ namespace Planner.Views.DetailViews
             List<Station> exitStations = new List<Station>();
             var boardingRegions = mainWindow.Regions.Where(x => x.StateId == 7);
 
-            if (route.IsRealRoute)
+            foreach (var p in GetPassengerCollection(route))
             {
-                foreach (var p in mainWindow.Passengers.Where(x => x.RealRouteId == route.RouteId))
-                {
-                    if (!boardingStations.Contains(p.BoardingStation))
-                    {
-                        boardingStations.Add(p.BoardingStation);
-                    }
-                    if (!exitStations.Contains(p.ExitStation))
-                    {
-                        exitStations.Add(p.ExitStation);
-                    }
-                }
-                foreach (var s in boardingStations)
-                {
-                    TextBlock text = new TextBlock
-                    {
-                        Text = $"{s}: {mainWindow.Passengers.Where(x => x.RealRouteId == route.RouteId && x.BoardingStationId == s.StationId).Count()}",
-                        Margin = new Thickness(0, 3, 0, 0)
-                    };
-                    boardingTabControl.Children.Add(text);
-                }
-                foreach (var s in exitStations)
-                {
-                    TextBlock text = new TextBlock
-                    {
-                        Text = $"{s}: {mainWindow.Passengers.Where(x => x.RealRouteId == route.RouteId && x.ExitStationId == s.StationId).Count()}",
-                        Margin = new Thickness(0, 3, 0, 0)
-                    };
-                    exitTabControl.Children.Add(text);
-                }
+                if (!boardingStations.Contains(p.BoardingStation))
+                    boardingStations.Add(p.BoardingStation);
+                if (!exitStations.Contains(p.ExitStation))
+                    exitStations.Add(p.ExitStation);
             }
-            else if (route.BoardingRoute)
+            foreach (var s in boardingStations)
             {
-                foreach (var p in mainWindow.Passengers.Where(x => x.BoardingRouteId == route.RouteId))
+                TextBlock text = new TextBlock
                 {
-                    if (!boardingStations.Contains(p.BoardingStation))
-                    {
-                        boardingStations.Add(p.BoardingStation);
-                    }
-                    if (!exitStations.Contains(p.ExitStation))
-                    {
-                        exitStations.Add(p.ExitStation);
-                    }
-                }
-                foreach (var s in boardingStations)
-                {
-                    TextBlock text = new TextBlock
-                    {
-                        Text = $"{s}: {mainWindow.Passengers.Where(x => x.BoardingRouteId == route.RouteId && x.BoardingStationId == s.StationId).Count()}",
-                        Margin = new Thickness(0, 3, 0, 0)
-                    };
-                    boardingTabControl.Children.Add(text);
-                }
-                foreach (var s in exitStations)
-                {
-                    TextBlock text = new TextBlock
-                    {
-                        Text = $"{s}: {mainWindow.Passengers.Where(x => x.BoardingRouteId == route.RouteId && x.ExitStationId == s.StationId).Count()}",
-                        Margin = new Thickness(0, 3, 0, 0)
-                    };
-                    exitTabControl.Children.Add(text);
-                }
+                    Text = $"{s}: {GetPassengerCollection(route).Where(x => x.BoardingStationId == s.StationId).Count()}",
+                    Margin = new Thickness(0, 3, 0, 0)
+                };
+                boardingTabControl.Children.Add(text);
             }
-            else
+            foreach (var s in exitStations)
             {
-                foreach (var p in mainWindow.Passengers.Where(x => x.RouteId == route.RouteId))
+                TextBlock text = new TextBlock
                 {
-                    if (!boardingStations.Contains(p.BoardingStation))
-                    {
-                        boardingStations.Add(p.BoardingStation);
-                    }
-                    if (!exitStations.Contains(p.ExitStation))
-                    {
-                        exitStations.Add(p.ExitStation);
-                    }
-                }
-                foreach (var s in boardingStations)
-                {
-                    TextBlock text = new TextBlock
-                    {
-                        Text = $"{s}: {mainWindow.Passengers.Where(x => x.RouteId == route.RouteId && x.BoardingStationId == s.StationId).Count()}",
-                        Margin = new Thickness(0, 3, 0, 0)
-                    };
-                    boardingTabControl.Children.Add(text);
-                }
-                foreach (var s in exitStations)
-                {
-                    TextBlock text = new TextBlock
-                    {
-                        Text = $"{s}: {mainWindow.Passengers.Where(x => x.RouteId == route.RouteId && x.ExitStationId == s.StationId).Count()}",
-                        Margin = new Thickness(0, 3, 0, 0)
-                    };
-                    exitTabControl.Children.Add(text);
-                }
+                    Text = $"{s}: {GetPassengerCollection(route).Where(x => x.ExitStationId == s.StationId).Count()}",
+                    Margin = new Thickness(0, 3, 0, 0)
+                };
+                exitTabControl.Children.Add(text);
             }
 
             foreach (var r in boardingRegions)
             {
                 TextBlock text = new TextBlock
                 {
-                    Text = $"{r}: {mainWindow.Passengers.Where(x => x.BoardingStation.RegionId == r.RegionId).Count()}",
+                    Text = $"{r}: {GetPassengerCollection(route).Where(x => x.BoardingStation.RegionId == r.RegionId).Count()}",
                     Margin = new Thickness(0, 3, 0, 0)
                 };
                 regionBoardingTabControl.Children.Add(text);
@@ -654,17 +568,33 @@ namespace Planner.Views.DetailViews
                     MessageBox.Show(ex.Message);
                 }
             }
-
         }
         #endregion
-        private void ItemSourceForGrid()
+        private IEnumerable<Passenger> GetPassengerCollection(Route route)
         {
-            if (route.IsRealRoute)
-                passengerDataGrid.ItemsSource = mainWindow.Passengers.Where(x => x.RealRouteId == route.RouteId).OrderBy(x => x.ExitStation.Order);
-            else if (route.BoardingRoute)
-                passengerDataGrid.ItemsSource = mainWindow.Passengers.Where(x => x.BoardingRouteId == route.RouteId).OrderBy(x => x.BoardingStation.Order);
+            if (mainWindow.PassengersDictionary.TryGetValue(route, out var collection))
+                return SortPassengersByStations(route, collection);
             else
-                passengerDataGrid.ItemsSource = mainWindow.Passengers.Where(x => x.RouteId == route.RouteId).OrderBy(x => x.ExitStation.Order);
+                throw new Exception();
+        }
+        private IEnumerable<Passenger> SortPassengersByStations(Route route, IEnumerable<Passenger> collection)
+        {
+            IEnumerable<Passenger> orderedCollection;
+            if (route.BoardingRoute)
+            {
+                if (!route.RouteBack)
+                    orderedCollection = collection.OrderBy(x => x.BoardingStation.Order).ThenBy(x => x.BusinessCase);
+                else
+                    orderedCollection = collection.OrderByDescending(x => x.BoardingStation.Order).ThenBy(x => x.BusinessCase);
+            }
+            else
+            {
+                if (!route.RouteBack)
+                    orderedCollection = collection.OrderBy(x => x.ExitStation.Order).ThenBy(x => x.BusinessCase);
+                else
+                    orderedCollection = collection.OrderByDescending(x => x.ExitStation.Order).ThenBy(x => x.BusinessCase);
+            }
+            return orderedCollection;
         }
         #endregion
     }

@@ -51,7 +51,7 @@ namespace Planner
         public ObservableCollection<Provider> FilterProviders { get; set; }
         public ObservableCollection<BusType> BusTypes { get; set; }
         public ObservableCollection<Passenger> Passengers { get; set; }
-        public Dictionary<List<Passenger>, Route> PassengersDictionary { get; set; }
+        public Dictionary<Route, IEnumerable<Passenger>> PassengersDictionary { get; set; }
         #endregion
 
         private readonly BackgroundWorker backgroundWorker;
@@ -81,6 +81,7 @@ namespace Planner
 
             InitializeComponent();
 
+            PassengersDictionary = new Dictionary<Route, IEnumerable<Passenger>>();
             backgroundWorker = new BackgroundWorker();
 
             backgroundWorker.DoWork += BackgroundWorker_DoWork;
@@ -95,6 +96,10 @@ namespace Planner
             uCStateRegionProvider.InitGrid();
             ucRoute.InitGrid();
             uCPassenger.InitGrid();
+            foreach (var r in Routes)
+            {
+                AddPassengersToDictionary(r);
+            }
         }
         private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -199,6 +204,17 @@ namespace Planner
         {
             StationOrder stationOrder = new StationOrder(stationManager, this);
             stationOrder.ShowDialog();
+        }
+        #endregion
+        #region Helpers
+        private void AddPassengersToDictionary(Route route)
+        {
+            if (route.IsRealRoute)
+                PassengersDictionary.Add(route, Passengers.Where(x => x.RealRouteId == route.RouteId));
+            else if (route.BoardingRoute)
+                PassengersDictionary.Add(route, Passengers.Where(x => x.BoardingRouteId == route.RouteId));
+            else
+                PassengersDictionary.Add(route, Passengers.Where(x => x.RouteId == route.RouteId));
         }
         #endregion
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -93,7 +94,10 @@ namespace Planner.Views.AddViews
 
             try
             {
-                mainWindow.Routes.Add(routeManager.Add(departureDatePicker.SelectedDate, routeBackCheckbox.IsChecked.Value, boardingRouteCheckbox.IsChecked.Value, realRouteCheckbox.IsChecked.Value, state, region, provider, licensePlateTextBox.Text, busType));
+                var route = routeManager.Add(departureDatePicker.SelectedDate, routeBackCheckbox.IsChecked.Value, boardingRouteCheckbox.IsChecked.Value, realRouteCheckbox.IsChecked.Value, state, region, provider, licensePlateTextBox.Text, busType);
+                mainWindow.Routes.Add(route);
+                mainWindow.PassengersDictionary.Add(route, new ObservableCollection<Passenger>());
+                
                 Close();
             }
             catch (Exception ex)

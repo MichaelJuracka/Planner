@@ -3,6 +3,7 @@ using Planner.Data.Models;
 using Planner.Views.ChooseViews;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -129,7 +130,7 @@ namespace Planner.Views.AddViews
         {
             try
             {
-                mainWindow.Passengers.Add(passengerManager.Add(
+                var passenger = passengerManager.Add(
                     businesCaseTextBox.Text,
                     firstNameTextBox.Text,
                     secondNameTextBox.Text,
@@ -141,7 +142,14 @@ namespace Planner.Views.AddViews
                     boardingRoute,
                     boardingStation,
                     exitStation
-                    ));
+                    );
+                mainWindow.Passengers.Add(passenger);
+                
+                mainWindow.PassengersDictionary.TryGetValue(route, out var collection);
+                ObservableCollection<Passenger> passengers = new ObservableCollection<Passenger>(collection);
+                passengers.Add(passenger);
+                mainWindow.PassengersDictionary[route] = passengers;
+
                 Close();
             }
             catch (Exception ex)

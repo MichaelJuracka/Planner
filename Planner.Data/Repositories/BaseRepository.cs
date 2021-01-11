@@ -35,9 +35,8 @@ namespace Planner.Data.Repositories
         }
         public ObservableCollection<TEntity> GetAll()
         {
-            var result = new ObservableCollection<TEntity>(dbSet.ToList());
-
-            return result;
+            var collection = new ObservableCollection<TEntity>(dbSet.ToList());
+            return collection;
         }
         public void Insert(TEntity entity)
         {
