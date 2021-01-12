@@ -38,13 +38,15 @@ namespace Planner.Data.Models
         public bool IsCleared { get; set; }
         [Range(0, 100)]
         public int? SeatNumber { get; set; }
-        public string Owner { get; set; }
+        [ForeignKey("Owner")]
+        public int OwnerId { get; set; }
         public string DepartureTime { get; set; }
         public virtual Route Route { get; set; }
         public virtual Route BoardingRoute { get; set; }
         public virtual Route RealRoute { get; set; }
         public virtual Station BoardingStation { get; set; }
         public virtual Station ExitStation { get; set; }
+        public virtual Owner Owner { get; set; }
         public Passenger()
         {
             FullName = FirstName + " " + SecondName;

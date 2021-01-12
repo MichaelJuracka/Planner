@@ -56,6 +56,8 @@
                     </MenuItem>
                     <MenuItem Header="Přidat dopravce" Name="newProvider" Click="newProvider_Click">
                     </MenuItem>
+                    <MenuItem Header="Přidat prodejce" Name="newOwner" Click="newOwner_Click">
+                    </MenuItem>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Zobrazit">

@@ -4,6 +4,7 @@ using Planner.Data.Interfaces;
 using Planner.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -16,15 +17,17 @@ namespace Planner.Business.Managers
         private readonly IPassengerRepository passengerRepository;
         private readonly IStationRepository stationRepository;
         private readonly IExportManager exportManager;
+        private readonly IOwnerManager ownerManager;
 
-        public OfficeManager(IPassengerRepository passengerRepository, IStationRepository stationRepository, IExportManager exportManager)
+        public OfficeManager(IPassengerRepository passengerRepository, IStationRepository stationRepository, IExportManager exportManager, IOwnerManager ownerManager)
         {
             this.passengerRepository = passengerRepository;
             this.stationRepository = stationRepository;
             this.exportManager = exportManager;
+            this.ownerManager = ownerManager;
         }
         #region Import
-        public List<Passenger> ImportPassengers(string filePath, Route route, IEnumerable<Station> boardingStations, IEnumerable<Station> exitStations)
+        public List<Passenger> ImportPassengers(string filePath, Route route, IEnumerable<Station> boardingStations, IEnumerable<Station> exitStations, ObservableCollection<Owner> owners)
         {
             List<Passenger> passengers = new List<Passenger>();
 
@@ -59,9 +62,19 @@ namespace Planner.Business.Managers
                         string addtionalInformation = null;
                         if (reader.GetValue(8) != null)
                             addtionalInformation = reader.GetValue(8).ToString();
-                        string owner = null;
-                        if (reader.GetValue(7) != null)
-                            owner = reader.GetValue(7).ToString();
+
+                        var owner = owners.FirstOrDefault(x => x.Name.ToLower() == reader.GetValue(7).ToString().ToLower());
+                        if (owner == null)
+                        {
+                            owner = ownerManager.Add(reader.GetValue(7).ToString());
+                            owners.Add(owner);
+                        }
+
+
+                        //string owner;
+                        //if (reader.GetValue(7) != null)
+                        //    owner = reader.GetValue(7).ToString();
+
                         if (route == null)
                             throw new ArgumentException("Vyberte jízdu");
                         var boardingStation = boardingStations.SingleOrDefault(x => x.Name.ToLower() == reader.GetValue(1).ToString().ToLower());
@@ -86,7 +99,7 @@ namespace Planner.Business.Managers
                             //Třeba dodělat - prozatím nelze získat z exportu
                             Email = null,
                             BoardingRouteId = null,
-                            Owner = owner
+                            OwnerId = owner.OwnerId
                         };
                         if (!route.RouteBack)
                             passenger.DepartureTime = boardingStation.DepartureTime;
@@ -236,7 +249,7 @@ namespace Planner.Business.Managers
                     worksheet.Cells[row, "D"] = p.SecondName;
                     worksheet.Cells[row, "E"] = p.Phone;
                     worksheet.Cells[row, "F"] = p.BusinessCase;
-                    worksheet.Cells[row, "G"] = p.Owner;
+                    worksheet.Cells[row, "G"] = p.Owner.ToString();
                     worksheet.Cells[row, "H"] = p.ExitStation.ToString();
                     worksheet.Cells[row, "I"] = p.BoardingStation.ToString();
                     worksheet.Cells[row, "J"] = p.AdditionalInformation;
@@ -244,18 +257,44 @@ namespace Planner.Business.Managers
             }
             else
             {
+                var stations = new List<Station>();
+                int rowNumber = 1;
+
                 foreach (var p in passengers)
                 {
-                    worksheet.Cells[row + 1, "A"] = row;
-                    worksheet.Cells[row, "B"] = p.FirstName;
-                    worksheet.Cells[row, "C"] = p.SecondName;
-                    worksheet.Cells[row, "D"] = p.Phone;
-                    worksheet.Cells[row, "E"] = p.BusinessCase;
-                    worksheet.Cells[row, "F"] = p.Owner;
-                    worksheet.Cells[row, "G"] = p.ExitStation.ToString();
-                    worksheet.Cells[row, "H"] = p.BoardingStation.ToString();
-                    worksheet.Cells[row, "I"] = p.AdditionalInformation;
+                    if (!stations.Contains(p.ExitStation))
+                        stations.Add(p.ExitStation);
+                }
 
+                foreach (var s in stations)
+                {
+                    row++;
+                    worksheet.Cells[row, "A"] = $"{passengers.Where(x => x.ExitStationId == s.StationId).Count()}pax, {s.Name}, {s.DeparturePlace}, {s.Gps}";
+                    row++;
+                    worksheet.Cells[row, "A"] = s.Description;
+
+                    Excel.Range firstRow = worksheet.Range[worksheet.Cells[row - 1, "A"], worksheet.Cells[row - 1, "I"]];
+                    Excel.Range secondRow = worksheet.Range[worksheet.Cells[row, "A"], worksheet.Cells[row, "I"]];
+
+                    firstRow.Merge();
+                    firstRow.Font.Bold = true;
+                    secondRow.Merge();
+                    secondRow.Font.Bold = true;
+
+                    foreach (var p in passengers.Where(x => x.ExitStationId == s.StationId))
+                    {
+                        row++;
+                        worksheet.Cells[row, "A"] = rowNumber;
+                        rowNumber++;
+                        worksheet.Cells[row, "B"] = p.FirstName;
+                        worksheet.Cells[row, "C"] = p.SecondName;
+                        worksheet.Cells[row, "D"] = p.Phone;
+                        worksheet.Cells[row, "E"] = p.BusinessCase;
+                        worksheet.Cells[row, "F"] = p.Owner.ToString();
+                        worksheet.Cells[row, "G"] = p.ExitStation.ToString();
+                        worksheet.Cells[row, "H"] = p.BoardingStation.ToString();
+                        worksheet.Cells[row, "I"] = p.AdditionalInformation;
+                    }
                 }
             }
 
@@ -269,8 +308,8 @@ namespace Planner.Business.Managers
             }
             else
             {
-                range = worksheet.Range[worksheet.Cells[1, "A"], worksheet.Cells[row, "H"]];
-                headline = worksheet.Range[worksheet.Cells[1, "A"], worksheet.Cells[1, "H"]];
+                range = worksheet.Range[worksheet.Cells[1, "A"], worksheet.Cells[row, "I"]];
+                headline = worksheet.Range[worksheet.Cells[1, "A"], worksheet.Cells[1, "I"]];
             }
             foreach (Excel.Range cell in range.Cells)
                 cell.BorderAround2();
@@ -489,12 +528,20 @@ namespace Planner.Business.Managers
             {
                 foreach (var s in stations)
                 {
-                    routeText += $"{passengers.FirstOrDefault(x => x.BoardingStationId == s.StationId).DepartureTime} {s.Name}, {s.DeparturePlace}, GPS: {s.Gps}\n";
+                    routeText += $"{passengers.FirstOrDefault(x => x.BoardingStationId == s.StationId).DepartureTime} {passengers.Where(x => x.BoardingStationId == s.StationId).Count()}pax {s.Name}, {s.DeparturePlace}, GPS: {s.Gps}\n";
                     foreach (var b in businessCases)
                     {
                         if (passengers.FirstOrDefault(x => x.BusinessCase == b).BoardingStationId == s.StationId)
-                            routeText += $"{passengers.Where(x => x.BusinessCase == b).Count()}pax {passengers.FirstOrDefault(x => x.BusinessCase == b).SecondName}, tel. {passengers.FirstOrDefault(x => x.BusinessCase == b && x.Phone != null).Phone}\n";
+                        {
+                            var passenger = passengers.FirstOrDefault(x => x.BusinessCase == b && x.Phone != null);
+                            string phone = "";
+                            if (passenger != null)
+                                phone = passenger.Phone;
+
+                            routeText += $"{passengers.Where(x => x.BusinessCase == b).Count()}x {passengers.FirstOrDefault(x => x.BusinessCase == b).SecondName}, tel. {phone}\n";
+                        }
                     }
+                    routeText += "\n";
                 }
             }
             else

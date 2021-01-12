@@ -19,7 +19,7 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="100"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="60"/>
@@ -45,7 +45,7 @@
         <TextBox Name="phoneTextBox" Grid.Row="3" Grid.Column="1" Margin="5" TextAlignment="Left"/>
         <TextBox Name="emailTextBox" Grid.Row="4" Grid.Column="1" Margin="5" TextAlignment="Left"/>
         <TextBox Name="additionInfoTextBox" Grid.Row="5" Grid.Column="1" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" Margin="5" TextAlignment="Left"/>
-        <TextBox Name="ownerTextBox" Grid.Row="6" Grid.Column="1" Margin="5" TextAlignment="Left"/>
+        <ComboBox Name="ownerComboBox" Grid.Row="6" Grid.Column="1" Margin="5" />
         <StackPanel Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" Orientation="Vertical" Margin="5">
             <TextBlock Name="routeTextBlock" Visibility="Hidden"/>
             <Button Name="chooseRouteButton" Content="Vybrat jízdu" Margin="0 8 0 0" Padding="5 0 5 0" Click="chooseRouteButton_Click"/>

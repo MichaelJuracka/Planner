@@ -70,6 +70,7 @@
     <Compile Include="Interfaces\IEmailSender.cs" />
     <Compile Include="Interfaces\IExportManager.cs" />
     <Compile Include="Interfaces\IOfficeManager.cs" />
+    <Compile Include="Interfaces\IOwnerManager.cs" />
     <Compile Include="Interfaces\IPassengerManager.cs" />
     <Compile Include="Interfaces\IProviderManager.cs" />
     <Compile Include="Interfaces\IRegionManager.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Managers\BusTypeManager.cs" />
     <Compile Include="Managers\ExportManager.cs" />
     <Compile Include="Managers\OfficeManager.cs" />
+    <Compile Include="Managers\OwnerManager.cs" />
     <Compile Include="Managers\PassengerManager.cs" />
     <Compile Include="Managers\ProviderManager.cs" />
     <Compile Include="Managers\RegionManager.cs" />

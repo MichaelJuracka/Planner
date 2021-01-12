@@ -76,8 +76,7 @@ namespace Planner.Views.ImportViews
             {
                 try
                 {
-                    var importedPassengers = officeManager.ImportPassengers(filePath, route, mainWindow.Stations.Where(x => x.BoardingStation), mainWindow.Stations.Where(x => x.BoardingStation == false));
-                        //.ForEach(x => mainWindow.Passengers.Add(x));
+                    var importedPassengers = officeManager.ImportPassengers(filePath, route, mainWindow.Stations.Where(x => x.BoardingStation), mainWindow.Stations.Where(x => x.BoardingStation == false), mainWindow.Owners);
                     mainWindow.PassengersDictionary.TryGetValue(route, out var collection);
                     ObservableCollection<Passenger> passengers = new ObservableCollection<Passenger>(collection);
                     foreach (var p in importedPassengers)

@@ -114,3 +114,5 @@ C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\bin\De
 C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\bin\Debug\MailKit.xml
 C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\obj\Debug\Views\DetailViews\ClearanceViews\DepartureTimeView.g.cs
 C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\obj\Debug\Views\DetailViews\ClearanceViews\DepartureTimeView.baml
+C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\obj\Debug\Views\AddViews\AddOwner.g.cs
+C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\obj\Debug\Views\AddViews\AddOwner.baml

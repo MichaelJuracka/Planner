@@ -52,7 +52,7 @@ namespace Planner.Views.UserControls
             
             try
             {
-                dataGridStation.SelectedItem = stationManager.Update(station, nameTextbox.Text, departurePlaceTextbox.Text, departureTimeTextbox.Text, descriptionTextbox.Text, gpsTextbox.Text, isInCzeCheckBox.IsChecked.Value, region);
+                dataGridStation.SelectedItem = stationManager.Update(station, nameTextbox.Text, departureTimeTextbox.Text, departurePlaceTextbox.Text, descriptionTextbox.Text, gpsTextbox.Text, isInCzeCheckBox.IsChecked.Value, region);
                 dataGridStation.Items.Refresh();
             }
             catch (Exception ex)

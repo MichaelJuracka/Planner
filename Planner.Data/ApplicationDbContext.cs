@@ -20,6 +20,7 @@ namespace Planner.Data
         public DbSet<State> States { get; set; }
         public DbSet<Station> Stations { get; set; }
         public DbSet<Export> Exports { get; set; }
+        public DbSet<Owner> Owners { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder builder)
         {

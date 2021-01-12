@@ -59,6 +59,7 @@ namespace Planner.Views.AddViews
                     boardingRouteTextBlock.Text = route.ToString();
                     boardingRouteTextBlock.Visibility = Visibility.Visible;
                 }
+                ownerComboBox.ItemsSource = mainWindow.Owners;
             }
         }
         private void bussinesCaseTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -128,6 +129,7 @@ namespace Planner.Views.AddViews
         #endregion
         private void submitButton_Click(object sender, RoutedEventArgs e)
         {
+            var owner = (Owner)ownerComboBox.SelectedItem;
             try
             {
                 var passenger = passengerManager.Add(
@@ -137,7 +139,7 @@ namespace Planner.Views.AddViews
                     phoneTextBox.Text,
                     emailTextBox.Text,
                     additionInfoTextBox.Text,
-                    ownerTextBox.Text,
+                    owner,
                     route,
                     boardingRoute,
                     boardingStation,

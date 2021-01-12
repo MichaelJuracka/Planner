@@ -7,6 +7,7 @@ using Planner.Views.DetailViews.ClearanceViews;
 using Planner.Views.ImportViews;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -241,6 +242,8 @@ namespace Planner.Views.DetailViews
                 var collection = GetPassengerCollection(route);
                 passengerDataGrid.ItemsSource = collection;
                 Passengers = collection;
+                RenderStationCounts();
+                numberOfMarked.Text = Passengers.Count().ToString();
             }
         }
         private void passengerAddButton_Click(object sender, RoutedEventArgs e)
@@ -252,6 +255,8 @@ namespace Planner.Views.DetailViews
                 var collection = GetPassengerCollection(route);
                 passengerDataGrid.ItemsSource = collection;
                 Passengers = collection;
+                RenderStationCounts();
+                numberOfMarked.Text = Passengers.Count().ToString();
             }
         } 
         #endregion
@@ -279,7 +284,12 @@ namespace Planner.Views.DetailViews
                 try
                 {
                     foreach (Passenger p in passengers)
+                    {
                         passengerManager.UpdateRoute(p, chooseRoute.route, true, false);
+                        ObservableCollection<Passenger> collection =  new ObservableCollection<Passenger>(mainWindow.PassengersDictionary[chooseRoute.route]);
+                        collection.Add(p);
+                        mainWindow.PassengersDictionary[chooseRoute.route] = collection;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -306,7 +316,12 @@ namespace Planner.Views.DetailViews
             if (chooseRoute.route != null)
             {
                 foreach (Passenger p in passengers)
+                {
                     passengerManager.UpdateRoute(p, chooseRoute.route, false, true);
+                    ObservableCollection<Passenger> collection = new ObservableCollection<Passenger>(mainWindow.PassengersDictionary[chooseRoute.route]);
+                    collection.Add(p);
+                    mainWindow.PassengersDictionary[chooseRoute.route] = collection;
+                }
 
                 passengerDataGrid.Items.Refresh();
             }
@@ -388,7 +403,7 @@ namespace Planner.Views.DetailViews
                 {
                     try
                     {
-                        officeManager.UpdateOrder(saveFileDialog.FileName, fileName, route, Passengers, GetPassengerCollection(chooseRoute.route));
+                        officeManager.UpdateOrder(saveFileDialog.FileName, fileName, route, Passengers, GetPassengerCollection(chooseRoute.route).Reverse());
                         routeManager.UpdateOrder(route, true);
                         mainWindow.Routes.FirstOrDefault(x => x.RouteId == route.RouteId).OrderCreated = true;
                         dataGrid.Items.Refresh();
@@ -434,6 +449,29 @@ namespace Planner.Views.DetailViews
                         MessageBox.Show(ex.Message);
                     }
                 }
+            }
+        }
+        #endregion
+        #region ContextMenu
+        private void deleteContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            var passengers = passengerDataGrid.SelectedItems;
+            if (passengers.Count == 0)
+            {
+                MessageBox.Show("Vyberte cestující");
+                return;
+            }
+            try
+            {
+                foreach (Passenger p in passengers)
+                {
+                    passengerManager.Delete(p.PassengerId);
+                    mainWindow.Passengers.Remove(p);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         #endregion

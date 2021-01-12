@@ -46,6 +46,7 @@ namespace Planner
             services.AddSingleton<IBusTypeRepository, BusTypeRepository>();
             services.AddSingleton<IPassengerRepository, PassengerRepository>();
             services.AddSingleton<IExportRepository, ExportRepository>();
+            services.AddSingleton<IOwnerRepository, OwnerRepository>();
 
             services.AddSingleton<IRegionManager, RegionManager>();
             services.AddSingleton<IStationManager, StationManager>();
@@ -56,6 +57,7 @@ namespace Planner
             services.AddSingleton<IPassengerManager, PassengerManager>();
             services.AddSingleton<IOfficeManager, OfficeManager>();
             services.AddSingleton<IExportManager, ExportManager>();
+            services.AddSingleton<IOwnerManager, OwnerManager>();
 
             services.AddSingleton<IEmailSender, EmailSender>();
         }

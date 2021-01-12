@@ -38,6 +38,7 @@ namespace Planner
         private readonly IPassengerManager passengerManager;
         private readonly IOfficeManager officeManager;
         private readonly IExportManager exportManager;
+        private readonly IOwnerManager ownerManager;
         private readonly IEmailSender emailSender;
 
         #region Collections
@@ -52,6 +53,7 @@ namespace Planner
         public ObservableCollection<BusType> BusTypes { get; set; }
         public ObservableCollection<Passenger> Passengers { get; set; }
         public Dictionary<Route, IEnumerable<Passenger>> PassengersDictionary { get; set; }
+        public ObservableCollection<Owner> Owners { get; set; }
         #endregion
 
         private readonly BackgroundWorker backgroundWorker;
@@ -65,6 +67,7 @@ namespace Planner
             IPassengerManager passengerManager,
             IOfficeManager officeManager,
             IExportManager exportManager,
+            IOwnerManager ownerManager,
             IEmailSender emailSender
             )
         {
@@ -77,6 +80,7 @@ namespace Planner
             this.passengerManager = passengerManager;
             this.officeManager = officeManager;
             this.exportManager = exportManager;
+            this.ownerManager = ownerManager;
             this.emailSender = emailSender;
 
             InitializeComponent();
@@ -97,13 +101,7 @@ namespace Planner
             ucRoute.InitGrid();
             uCPassenger.InitGrid();
             foreach (var r in Routes)
-            {
-<<<<<<< HEAD
                 AddPassengersToDictionary(r);
-=======
-                PassengersDictionary.Add(r, Passengers.Where(x => x.RouteId == r.RouteId));
->>>>>>> 8d6788d9553b45a73ff8682a570c5d75014b5b30
-            }
         }
         private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -117,12 +115,13 @@ namespace Planner
             FilterProviders = providerManager.GetAll();
             BusTypes = busTypeManager.GetAll();
             Passengers = passengerManager.GetAll();
+            Owners = ownerManager.GetAll();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             backgroundWorker.RunWorkerAsync();
             ucStation.InitManagers(stationManager, this);
-            uCStateRegionProvider.InitManagers(stateManager, regionManager, providerManager, this);
+            uCStateRegionProvider.InitManagers(stateManager, regionManager, providerManager, ownerManager, this);
             ucRoute.InitManagers(routeManager, passengerManager, stationManager, officeManager, exportManager, this);
             uCPassenger.InitManagers(passengerManager, stationManager, this);
         }
@@ -201,6 +200,10 @@ namespace Planner
         {
             ImportStation importStation = new ImportStation(officeManager, this);
             importStation.ShowDialog();
+        }
+        private void newOwner_Click(object sender, RoutedEventArgs e)
+        {
+
         }
         #endregion
         #region Tab Setting

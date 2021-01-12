@@ -6,7 +6,7 @@ namespace Planner.Business.Interfaces
 {
     public interface IOfficeManager
     {
-        List<Passenger> ImportPassengers(string filePath, Route route, IEnumerable<Station> boardingStations, IEnumerable<Station> exitStations);
+        List<Passenger> ImportPassengers(string filePath, Route route, IEnumerable<Station> boardingStations, IEnumerable<Station> exitStations, ObservableCollection<Owner> owners);
         List<Station> ImportStations(string filePath, IEnumerable<Region> regions);
         void RouteList(IEnumerable<Passenger> passengers, string filePath, int routeId, string fileName, bool isRealRoute);
         void UpdateOrder(string filePath, string fileName, Route route, IEnumerable<Passenger> passengers, IEnumerable<Passenger> passengersBack);

@@ -27,3 +27,6 @@ C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner.Data\o
 C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner.Data\obj\Debug\Planner.Data.Migrations.update_Export.resources
 C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner.Data\obj\Debug\Planner.Data.Migrations.Export_Name.resources
 C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner.Data\obj\Debug\Planner.Data.Migrations.station_order.resources
+C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner.Data\obj\Debug\Planner.Data.Migrations.add_owner.resources
+C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner.Data\obj\Debug\Planner.Data.Migrations.add_owner_2.resources
+C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner.Data\obj\Debug\Planner.Data.csprojAssemblyReference.cache

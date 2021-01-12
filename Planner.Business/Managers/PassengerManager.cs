@@ -17,7 +17,7 @@ namespace Planner.Business.Managers
             this.passengerRepository = passengerRepository;
             this.emailSender = emailSender;
         }
-        public Passenger Add(string businessCase, string firstName, string secondName, string phone, string email, string additionalInformation, string owner, Route route, Route boardingRoute, Station boardingStation, Station exitStation)
+        public Passenger Add(string businessCase, string firstName, string secondName, string phone, string email, string additionalInformation, Owner owner, Route route, Route boardingRoute, Station boardingStation, Station exitStation)
         {
             if (businessCase.Length == 0)
                 throw new ArgumentException("Vyplňte obchodní případ");
@@ -31,8 +31,8 @@ namespace Planner.Business.Managers
                 email = null;
             if (additionalInformation.Length == 0)
                 additionalInformation = null;
-            if (owner.Length == 0)
-                owner = null;
+            if (owner == null)
+                throw new ArgumentException("Vyberte prodejce");
             if (route == null)
                 throw new ArgumentException("Vyberte jízdu");
             if (boardingStation == null)
@@ -48,7 +48,7 @@ namespace Planner.Business.Managers
                 Phone = phone,
                 Email = email,
                 AdditionalInformation = additionalInformation,
-                Owner = owner,
+                OwnerId = owner.OwnerId,
                 RouteId = route.RouteId,
                 BoardingStationId = boardingStation.StationId,
                 ExitStationId = exitStation.StationId
@@ -81,7 +81,7 @@ namespace Planner.Business.Managers
 
             if (filterId == null && filterBusinessCase == null && firstName.Length == 0 && secondName.Length == 0 && dateFrom == null && dateTo == null && region.RegionId == 0)
             {
-                return passengers.OrderBy(x => x.ExitStation.Order);
+                return passengers;
             }
             else
             {
@@ -100,7 +100,7 @@ namespace Planner.Business.Managers
                 if (region != null)
                     filterPassengers = filterPassengers.Where(x => x.BoardingStation.RegionId == region.RegionId);
 
-                return filterPassengers.OrderBy(x => x.ExitStation.Order);
+                return filterPassengers;
             }
         }
         public Passenger Update(Passenger passenger, string firstName, string secondName, string phone, string email, string additionalInformation, Station boardingStation, Station exitStation)
@@ -178,6 +178,10 @@ namespace Planner.Business.Managers
 
                 emailSender.SendEmail("michael.juracka@email.cz", "Odbavení dopravy", body);
             }
+        }
+        public void Delete(int passengerId)
+        {
+            passengerRepository.Delete(passengerId);
         }
     }
 }

@@ -72,6 +72,15 @@
                 <DataGridTextColumn Header="Číslo sedadla" Width="80" Binding="{Binding SeatNumber}" x:Name="seatNumberColumn"/>
                 <DataGridTextColumn Header="Dodatečné informace" Width="*" Binding="{Binding AdditionalInformation}"/>
             </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Odstranit" Name="deleteContextMenu" Click="deleteContextMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/deleteIcon.ico"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
 
         <!--#region Summary and Update -->
