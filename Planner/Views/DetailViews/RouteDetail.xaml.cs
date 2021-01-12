@@ -41,6 +41,7 @@ namespace Planner.Views.DetailViews
 
         private Station boardingStation;
         private Station exitStation;
+        private IEnumerable<Passenger> Passengers { get; set; }
         public RouteDetail(IPassengerManager passengerManager, IStationManager stationManager, IRouteManager routeManager, IOfficeManager officeManager, IExportManager exportManager, MainWindow mainWindow, Route route, DataGrid dataGrid)
         {
             this.passengerManager = passengerManager;
@@ -58,7 +59,8 @@ namespace Planner.Views.DetailViews
             Title = route.ToString();
             routeTextBlock.Text = route.ToString();
 
-            passengerDataGrid.ItemsSource = GetPassengerCollection(route);
+            Passengers = GetPassengerCollection(route);
+            passengerDataGrid.ItemsSource = Passengers;
 
             if (route.IsRealRoute || route.BoardingRoute)
             {
@@ -132,7 +134,7 @@ namespace Planner.Views.DetailViews
         private void filterButton_Click(object sender, RoutedEventArgs e)
         {
             var region = (Region)filterRegionComboBox.SelectedItem;
-            passengerDataGrid.ItemsSource = SortPassengersByStations(route, passengerManager.FilterPassengers(GetPassengerCollection(route), filterIdTextBox.Text, filterBusinessCaseTextBox.Text, filterNameTextBox.Text, filterSecondNameTextBox.Text, region: region));
+            passengerDataGrid.ItemsSource = SortPassengersByStations(route, passengerManager.FilterPassengers(Passengers, filterIdTextBox.Text, filterBusinessCaseTextBox.Text, filterNameTextBox.Text, filterSecondNameTextBox.Text, region: region));
         }
         private void filterBusinessCaseTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -236,7 +238,9 @@ namespace Planner.Views.DetailViews
             {
                 ImportPassenger importPassenger = new ImportPassenger(routeManager, officeManager, mainWindow, route);
                 importPassenger.ShowDialog();
-                passengerDataGrid.ItemsSource = GetPassengerCollection(route);
+                var collection = GetPassengerCollection(route);
+                passengerDataGrid.ItemsSource = collection;
+                Passengers = collection;
             }
         }
         private void passengerAddButton_Click(object sender, RoutedEventArgs e)
@@ -245,7 +249,9 @@ namespace Planner.Views.DetailViews
             {
                 AddPassenger addPassenger = new AddPassenger(passengerManager, routeManager, stationManager, mainWindow, route);
                 addPassenger.ShowDialog();
-                passengerDataGrid.ItemsSource = GetPassengerCollection(route);
+                var collection = GetPassengerCollection(route);
+                passengerDataGrid.ItemsSource = collection;
+                Passengers = collection;
             }
         } 
         #endregion
@@ -340,7 +346,7 @@ namespace Planner.Views.DetailViews
                     if (File.Exists(saveFileDialog.FileName))
                         File.Delete(saveFileDialog.FileName);
 
-                    officeManager.RouteList(GetPassengerCollection(route), saveFileDialog.FileName, route.RouteId, fileName, route.IsRealRoute);
+                    officeManager.RouteList(Passengers, saveFileDialog.FileName, route.RouteId, fileName, route.IsRealRoute);
                     RenderExports();
                     /* až u zasedáků
                     routeManager.UpdateAgenda(route, true);
@@ -382,7 +388,7 @@ namespace Planner.Views.DetailViews
                 {
                     try
                     {
-                        officeManager.UpdateOrder(saveFileDialog.FileName, fileName, route, GetPassengerCollection(route), GetPassengerCollection(chooseRoute.route));
+                        officeManager.UpdateOrder(saveFileDialog.FileName, fileName, route, Passengers, GetPassengerCollection(chooseRoute.route));
                         routeManager.UpdateOrder(route, true);
                         mainWindow.Routes.FirstOrDefault(x => x.RouteId == route.RouteId).OrderCreated = true;
                         dataGrid.Items.Refresh();
@@ -417,7 +423,7 @@ namespace Planner.Views.DetailViews
                 {
                     try
                     {
-                        officeManager.UpdateOrderWord(saveFileDialog.FileName, fileName, route, GetPassengerCollection(route));
+                        officeManager.UpdateOrderWord(saveFileDialog.FileName, fileName, route, Passengers);
                         routeManager.UpdateOrder(route, true);
                         mainWindow.Routes.FirstOrDefault(x => x.RouteId == route.RouteId).OrderCreated = true;
                         dataGrid.Items.Refresh();
@@ -442,7 +448,7 @@ namespace Planner.Views.DetailViews
             List<Station> exitStations = new List<Station>();
             var boardingRegions = mainWindow.Regions.Where(x => x.StateId == 7);
 
-            foreach (var p in GetPassengerCollection(route))
+            foreach (var p in Passengers)
             {
                 if (!boardingStations.Contains(p.BoardingStation))
                     boardingStations.Add(p.BoardingStation);
@@ -453,7 +459,7 @@ namespace Planner.Views.DetailViews
             {
                 TextBlock text = new TextBlock
                 {
-                    Text = $"{s}: {GetPassengerCollection(route).Where(x => x.BoardingStationId == s.StationId).Count()}",
+                    Text = $"{s}: {Passengers.Where(x => x.BoardingStationId == s.StationId).Count()}",
                     Margin = new Thickness(0, 3, 0, 0)
                 };
                 boardingTabControl.Children.Add(text);
@@ -462,7 +468,7 @@ namespace Planner.Views.DetailViews
             {
                 TextBlock text = new TextBlock
                 {
-                    Text = $"{s}: {GetPassengerCollection(route).Where(x => x.ExitStationId == s.StationId).Count()}",
+                    Text = $"{s}: {Passengers.Where(x => x.ExitStationId == s.StationId).Count()}",
                     Margin = new Thickness(0, 3, 0, 0)
                 };
                 exitTabControl.Children.Add(text);
@@ -472,7 +478,7 @@ namespace Planner.Views.DetailViews
             {
                 TextBlock text = new TextBlock
                 {
-                    Text = $"{r}: {GetPassengerCollection(route).Where(x => x.BoardingStation.RegionId == r.RegionId).Count()}",
+                    Text = $"{r}: {Passengers.Where(x => x.BoardingStation.RegionId == r.RegionId).Count()}",
                     Margin = new Thickness(0, 3, 0, 0)
                 };
                 regionBoardingTabControl.Children.Add(text);
