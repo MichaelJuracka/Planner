@@ -98,7 +98,11 @@ namespace Planner
             uCPassenger.InitGrid();
             foreach (var r in Routes)
             {
+<<<<<<< HEAD
                 AddPassengersToDictionary(r);
+=======
+                PassengersDictionary.Add(r, Passengers.Where(x => x.RouteId == r.RouteId));
+>>>>>>> 8d6788d9553b45a73ff8682a570c5d75014b5b30
             }
         }
         private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
