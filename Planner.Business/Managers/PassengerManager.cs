@@ -70,38 +70,25 @@ namespace Planner.Business.Managers
         }
         public IEnumerable<Passenger> FilterPassengers(IEnumerable<Passenger> passengers, string id, string businessCase, string firstName, string secondName, DateTime? dateFrom = null, DateTime? dateTo = null, Region region = null)
         {
-            int? filterId = null;
-            int? filterBusinessCase = null;
-            if (id.Length != 0)
-                filterId = int.Parse(id);
-            if (businessCase.Length != 0)
-                filterBusinessCase = int.Parse(businessCase);
-
-            IEnumerable<Passenger> filterPassengers = passengers;
-
-            if (filterId == null && filterBusinessCase == null && firstName.Length == 0 && secondName.Length == 0 && dateFrom == null && dateTo == null && region.RegionId == 0)
-            {
+            if (id.Length == 0 && businessCase.Length == 0 && firstName.Length == 0 && secondName.Length == 0 && dateFrom == null && dateTo == null && region == null)
                 return passengers;
-            }
-            else
-            {
-                if (filterId != null)
-                    filterPassengers = filterPassengers.Where(x => x.PassengerId == filterId);
-                if (filterBusinessCase != null)
-                    filterPassengers = filterPassengers.Where(x => x.BusinessCase == filterBusinessCase);
-                if (firstName.Length != 0)
-                    filterPassengers = filterPassengers.Where(x => x.FirstName.ToLower().Contains(firstName.ToLower()));
-                if (secondName.Length != 0)
-                    filterPassengers = filterPassengers.Where(x => x.SecondName.ToLower().Contains(secondName.ToLower()));
-                if (dateFrom != null)
-                    filterPassengers = filterPassengers.Where(x => x.Route.DepartureDate >= dateFrom);
-                if (dateTo != null)
-                    filterPassengers = filterPassengers.Where(x => x.Route.DepartureDate <= dateTo);
-                if (region != null)
-                    filterPassengers = filterPassengers.Where(x => x.BoardingStation.RegionId == region.RegionId);
 
-                return filterPassengers;
-            }
+            if (id.Length != 0)
+                passengers = passengers.Where(x => x.PassengerId == int.Parse(id));
+            if (businessCase.Length != 0)
+                passengers = passengers.Where(x => x.BusinessCase == int.Parse(businessCase));
+            if (firstName.Length != 0)
+                passengers = passengers.Where(x => x.FirstName.ToLower().Contains(firstName.ToLower()));
+            if (secondName.Length != 0)
+                passengers = passengers.Where(x => x.SecondName.ToLower().Contains(secondName.ToLower()));
+            if (dateFrom != null)
+                passengers = passengers.Where(x => x.Route.DepartureDate >= dateFrom);
+            if (dateTo != null)
+                passengers = passengers.Where(x => x.Route.DepartureDate <= dateTo);
+            if (region != null)
+                passengers = passengers.Where(x => x.BoardingStation.RegionId == region.RegionId);
+
+            return passengers;
         }
         public Passenger Update(Passenger passenger, string firstName, string secondName, string phone, string email, string additionalInformation, Station boardingStation, Station exitStation)
         {

@@ -33,7 +33,7 @@ namespace Planner.Views.AddViews
         {
             try
             {
-                mainWindow.Owners.Add(ownerManager.Add(nameTextBox.Text));
+                mainWindow.Owners.Add(ownerManager.Add(nameTextBox.Text, emailTextBox.Text));
                 Close();
             }
             catch (Exception ex)

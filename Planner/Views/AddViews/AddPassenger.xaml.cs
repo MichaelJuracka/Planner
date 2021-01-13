@@ -73,8 +73,7 @@ namespace Planner.Views.AddViews
         #region Choose
         private void chooseRouteButton_Click(object sender, RoutedEventArgs e)
         {
-            ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow);
-            chooseRoute.routeDataGrid.ItemsSource = mainWindow.Routes.Where(x => x.BoardingRoute == false && x.IsRealRoute == false);
+            ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow.Routes.Where(x => x.BoardingRoute == false && x.IsRealRoute == false), mainWindow);
             chooseRoute.ShowDialog();
             route = chooseRoute.route;
             if (chooseRoute.route != null)
@@ -92,8 +91,7 @@ namespace Planner.Views.AddViews
         }
         private void chooseBoardingRouteButton_Click(object sender, RoutedEventArgs e)
         {
-            ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow);
-            chooseRoute.routeDataGrid.ItemsSource = mainWindow.Routes.Where(x => x.BoardingRoute == true);
+            ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow.Routes.Where(x => x.BoardingRoute == true), mainWindow);
             chooseRoute.ShowDialog();
             boardingRoute = chooseRoute.route;
             if (chooseRoute.route != null)
@@ -130,6 +128,7 @@ namespace Planner.Views.AddViews
         private void submitButton_Click(object sender, RoutedEventArgs e)
         {
             var owner = (Owner)ownerComboBox.SelectedItem;
+
             try
             {
                 var passenger = passengerManager.Add(

@@ -66,7 +66,7 @@ namespace Planner.Business.Managers
                         var owner = owners.FirstOrDefault(x => x.Name.ToLower() == reader.GetValue(7).ToString().ToLower());
                         if (owner == null)
                         {
-                            owner = ownerManager.Add(reader.GetValue(7).ToString());
+                            owner = ownerManager.Add(reader.GetValue(7).ToString(), null);
                             owners.Add(owner);
                         }
 

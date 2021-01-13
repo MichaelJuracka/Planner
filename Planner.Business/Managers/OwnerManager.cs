@@ -19,19 +19,22 @@ namespace Planner.Business.Managers
         {
             return ownerRepository.GetAll();
         }
-        public Owner Add(string name)
+        public Owner Add(string name, string email)
         {
             if (name.Length == 0)
                 throw new ArgumentException("Zadejte název prodejce");
+            if (email.Length == 0)
+                email = null;
 
             var owner = new Owner()
             {
-                Name = name
+                Name = name,
+                Email = email
             };
             ownerRepository.Insert(owner);
             return owner;
         }
-        public IEnumerable<Owner> FilterOwners(IEnumerable<Owner> owners, string name, string id)
+        public IEnumerable<Owner> FilterOwners(IEnumerable<Owner> owners, string name, string id, string email)
         {
             int? filterId = null;
             if (id.Length != 0)
@@ -39,17 +42,32 @@ namespace Planner.Business.Managers
 
             IEnumerable<Owner> filteredOwners = owners;
 
-            if (filterId == null && name.Length == 0)
+            if (filterId == null && name.Length == 0 && email.Length == 0)
                 return filteredOwners;
             else
             {
                 if (name.Length != 0)
-                    filteredOwners = filteredOwners.Where(x => x.Name == name);
+                    filteredOwners = filteredOwners.Where(x => x.Name.Contains(name));
                 if (filterId != null)
                     filteredOwners = filteredOwners.Where(x => x.OwnerId == filterId);
+                if (email.Length != 0)
+                    filteredOwners = filteredOwners.Where(x => x.Email.Contains(email));
 
                 return filteredOwners;
             }
+        }
+        public Owner UpdateOwner(Owner owner, string name, string email)
+        {
+            if (name.Length == 0)
+                throw new ArgumentException("Jméno nemůže být prázdné");
+            if (email.Length == 0)
+                email = null;
+
+            owner.Name = name;
+            owner.Email = email;
+
+            ownerRepository.Update(owner);
+            return owner;
         }
     }
 }

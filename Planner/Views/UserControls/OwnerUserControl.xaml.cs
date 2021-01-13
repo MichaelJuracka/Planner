@@ -1,4 +1,5 @@
 ﻿using Planner.Business.Interfaces;
+using Planner.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,33 +23,56 @@ namespace Planner.Views.UserControls
     /// </summary>
     public partial class OwnerUserControl : UserControl
     {
-        private readonly IOwnerManager ownerManager;
-        private readonly MainWindow mainWindow;
+        private IOwnerManager ownerManager;
+        private MainWindow mainWindow;
 
         private readonly Regex regex = new Regex("[^0-9.-]+");
-        public OwnerUserControl(IOwnerManager ownerManager, MainWindow mainWindow)
+        public OwnerUserControl()
         {
-            this.mainWindow = mainWindow;
-            this.ownerManager = ownerManager;
-
             InitializeComponent();
-
+        }
+        public void InitGrid()
+        {
             dataGridOwners.ItemsSource = mainWindow.Owners;
         }
+        public void InitManagers(IOwnerManager ownerManager, MainWindow mainWindow)
+        {
+            this.ownerManager = ownerManager;
+            this.mainWindow = mainWindow;
+        }
+        #region Filter
         private void ownerIdTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = regex.IsMatch(e.Text);
         }
         private void filterOwnerButton_Click(object sender, RoutedEventArgs e)
         {
+            dataGridOwners.ItemsSource = ownerManager.FilterOwners(mainWindow.Owners, ownerNameTextBox.Text, ownerIdTextBox.Text, ownerEmailTextBox.Text);
+        }
+        #endregion
+        #region Update
+        private void updateButton_Click(object sender, RoutedEventArgs e)
+        {
+            var owner = (Owner)dataGridOwners.SelectedItem;
+
             try
             {
-                dataGridOwners.ItemsSource = ownerManager.FilterOwners(mainWindow.Owners, ownerNameTextBox.Text, ownerIdTextBox.Text);
+                dataGridOwners.SelectedItem = ownerManager.UpdateOwner(owner, nameTextBox.Text, emailTextBox.Text);
+                dataGridOwners.Items.Refresh();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+        private void dataGridOwners_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dataGridOwners.SelectedItem is Owner owner)
+            {
+                nameTextBox.Text = owner.Name;
+                emailTextBox.Text = owner.Email;
+            }
+        }
+        #endregion
     }
 }

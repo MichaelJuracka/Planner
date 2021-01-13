@@ -100,6 +100,7 @@ namespace Planner
             uCStateRegionProvider.InitGrid();
             ucRoute.InitGrid();
             uCPassenger.InitGrid();
+            uCOwner.InitGrid();
             foreach (var r in Routes)
                 AddPassengersToDictionary(r);
         }
@@ -121,9 +122,10 @@ namespace Planner
         {
             backgroundWorker.RunWorkerAsync();
             ucStation.InitManagers(stationManager, this);
-            uCStateRegionProvider.InitManagers(stateManager, regionManager, providerManager, ownerManager, this);
+            uCStateRegionProvider.InitManagers(stateManager, regionManager, providerManager, this);
             ucRoute.InitManagers(routeManager, passengerManager, stationManager, officeManager, exportManager, this);
             uCPassenger.InitManagers(passengerManager, stationManager, this);
+            uCOwner.InitManagers(ownerManager, this);
         }
         private void SetUCsVisibility()
         {
@@ -131,7 +133,7 @@ namespace Planner
             ucStation.Visibility = Visibility.Hidden;
             uCStateRegionProvider.Visibility = Visibility.Hidden;
             uCPassenger.Visibility = Visibility.Hidden;
-            ucOwnerMenu.Visibility = Visibility.Hidden;
+            uCOwner.Visibility = Visibility.Hidden;
             busImage.Visibility = Visibility.Hidden;
         }
         private void Home_Click(object sender, RoutedEventArgs e)
@@ -163,7 +165,7 @@ namespace Planner
         private void ucOwnerMenu_Click_1(object sender, RoutedEventArgs e)
         {
             SetUCsVisibility();
-            
+            uCOwner.Visibility = Visibility.Visible;
         }
         #endregion
         #region Tab New

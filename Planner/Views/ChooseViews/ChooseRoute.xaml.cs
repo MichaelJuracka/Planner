@@ -22,25 +22,26 @@ namespace Planner.Views.ChooseViews
     /// </summary>
     public partial class ChooseRoute : Window
     {
-        private IRouteManager routeManager;
-        private MainWindow mainWindow;
+        private readonly IRouteManager routeManager;
+        private readonly MainWindow mainWindow;
+        private readonly IEnumerable<Route> routes;
         public Route route = null;
 
-        public ChooseRoute(IRouteManager routeManager, MainWindow mainWindow)
+        public ChooseRoute(IRouteManager routeManager, IEnumerable<Route> routes, MainWindow mainWindow)
         {
             this.routeManager = routeManager;
             this.mainWindow = mainWindow;
+            this.routes = routes;
             
             InitializeComponent();
 
             fromDatePicker.SelectedDate = DateTime.Now;
+            routeDataGrid.ItemsSource = routes;
         }
-
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
-
         private void submitButton_Click(object sender, RoutedEventArgs e)
         {
             if (routeDataGrid.SelectedItem != null)
@@ -52,7 +53,6 @@ namespace Planner.Views.ChooseViews
             else
                 MessageBox.Show("Vyberte jízdu");
         }
-
         private void filterStateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (filterStateComboBox.SelectedIndex != 0)
@@ -60,7 +60,6 @@ namespace Planner.Views.ChooseViews
             else
                 filterRegionComboBox.IsEnabled = true;
         }
-
         private void filterRegionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (filterRegionComboBox.SelectedIndex != 0)
@@ -68,18 +67,12 @@ namespace Planner.Views.ChooseViews
             else
                 filterStateComboBox.IsEnabled = true;
         }
-
         private void filterButton_Click(object sender, RoutedEventArgs e)
         {
-            DateTime? fromDate = fromDatePicker.SelectedDate;
-            DateTime? toDate = toDatePicker.SelectedDate;
             var state = (State)filterStateComboBox.SelectedItem;
             var region = (Region)filterRegionComboBox.SelectedItem;
-            bool routeTo = filterNotRouteBackCheckBox.IsChecked.Value;
-            bool routeFrom = filterRouteBackCheckBox.IsChecked.Value;
-            routeDataGrid.ItemsSource = routeManager.FilterRoutes(mainWindow.Routes, fromDate, toDate, "", state, region, routeTo, routeFrom);
+            routeDataGrid.ItemsSource = routeManager.FilterRoutes(routes, fromDatePicker.SelectedDate, toDatePicker.SelectedDate, "", state, region, filterNotRouteBackCheckBox.IsChecked.Value, filterRouteBackCheckBox.IsChecked.Value);
         }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             filterStateComboBox.ItemsSource = mainWindow.FilterStates;

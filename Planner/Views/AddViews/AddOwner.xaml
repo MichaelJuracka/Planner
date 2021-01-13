@@ -13,15 +13,18 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="90"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Název prodejce" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 6 0" ></TextBlock>
+        <TextBlock Text="Název" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 6 6" ></TextBlock>
+        <TextBlock Text="Email" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 6 0" Grid.Row="1"></TextBlock>
 
-        <TextBox Name="nameTextBox" VerticalAlignment="Center" Grid.Column="1" Margin="0 0 7 0"></TextBox>
+        <TextBox Name="nameTextBox" VerticalAlignment="Bottom" Grid.Column="1" Margin="0 0 7 6"></TextBox>
+        <TextBox Name="emailTextBox" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Margin="0 0 7 0"></TextBox>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" >
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" >
             <Button Name="addButton" Content="Přidat" Padding="10 5 10 5" IsDefault="True" Click="addButton_Click"/>
             <Button Name="cancelButton" Content="Zrušit" Padding="10 5 10 5" Margin="8 0 0 0" Click="cancelButton_Click"/>
         </StackPanel>

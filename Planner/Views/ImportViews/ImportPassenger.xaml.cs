@@ -59,8 +59,7 @@ namespace Planner.Views.ImportViews
         }
         private void chooseRouteButton_Click(object sender, RoutedEventArgs e)
         {
-            ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow);
-            chooseRoute.routeDataGrid.ItemsSource = mainWindow.Routes.Where(x => !x.BoardingRoute && !x.IsRealRoute);
+            ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow.Routes.Where(x => !x.BoardingRoute && !x.IsRealRoute), mainWindow);
             chooseRoute.ShowDialog();
             if (chooseRoute.route != null)
             {

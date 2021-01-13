@@ -102,6 +102,7 @@
             <CustomUC:StationUserControl x:Name="ucStation" Visibility="Hidden"></CustomUC:StationUserControl>
             <CustomUC:StateRegionProviderUserControl x:Name="uCStateRegionProvider" Visibility="Hidden"></CustomUC:StateRegionProviderUserControl>
             <CustomUC:PassengerUserControl x:Name="uCPassenger" Visibility="Hidden"></CustomUC:PassengerUserControl>
+            <CustomUC:OwnerUserControl x:Name="uCOwner" Visibility="Hidden"></CustomUC:OwnerUserControl>
         </Grid>
 
         <Grid Visibility="Visible" Background="LightGray" Grid.Row="2">

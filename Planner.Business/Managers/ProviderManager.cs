@@ -2,7 +2,9 @@
 using Planner.Data.Interfaces;
 using Planner.Data.Models;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Planner.Business.Managers
 {
@@ -36,6 +38,17 @@ namespace Planner.Business.Managers
         {
             return providerRepository.GetAll();
         }
+        public IEnumerable<Provider> FilterProviders(IEnumerable<Provider> providers, string id, string name)
+        {
+            if (id.Length == 0 && name.Length == 0)
+                return providers;
 
+            if (id.Length != 0)
+                providers = providers.Where(x => x.ProviderId == int.Parse(id));
+            if (name.Length != 0)
+                providers = providers.Where(x => x.Name.ToLower().Contains(name.ToLower()));
+
+            return providers;
+        }
     }
 }

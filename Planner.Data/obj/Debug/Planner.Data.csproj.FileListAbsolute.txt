@@ -30,4 +30,3 @@ C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner.Data\o
 C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner.Data\obj\Debug\Planner.Data.Migrations.add_owner.resources
 C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner.Data\obj\Debug\Planner.Data.Migrations.add_owner_2.resources
 C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner.Data\obj\Debug\Planner.Data.Migrations.update_owners_2.resources
-C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner.Data\obj\Debug\Planner.Data.csprojAssemblyReference.cache

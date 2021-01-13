@@ -51,7 +51,7 @@ namespace Planner.Business.Managers
             };
             if (stationRepository.FindByName(station.Name) != null)
                 throw new Exception("Tato zastávka je již v databázi");
-            
+
             stationRepository.Insert(station);
 
             return station;
@@ -102,39 +102,23 @@ namespace Planner.Business.Managers
         public IEnumerable<Station> FilterStations(IEnumerable<Station> stations, string id, string name, Region region, bool? isBoardingStation = null)
         {
             if (id.Length == 0 && name.Length == 0 && region.RegionId == 0 && isBoardingStation == null)
-            {
                 return stations;
-            }
-            else
-            {
-                IEnumerable<Station> filteredStations = stations;
-                int? filterId = null;
-                string filterName = null;
-                int? filterRegionId = null;
 
-                if (id.Length != 0)
-                    filterId = int.Parse(id);
-                if (name.Length != 0)
-                    filterName = name.ToLower();
-                if (region != null)
-                    filterRegionId = region.RegionId;
+            if (id.Length != 0)
+                stations = stations.Where(x => x.StationId == int.Parse(id));
+            if (name.Length != 0)
+                stations = stations.Where(x => x.Name.ToLower().Contains(name.ToLower()));
+            if (region.RegionId != 0)
+                stations = stations.Where(x => x.RegionId == region.RegionId);
+            if (isBoardingStation != null)
+                stations = stations.Where(x => x.BoardingStation == isBoardingStation);
 
-                if (filterId != null)
-                    filteredStations = filteredStations.Where(x => x.StationId == filterId);
-                if (filterName != null)
-                    filteredStations = filteredStations.Where(x => x.Name.ToLower().Contains(filterName));
-                if (filterRegionId != 0)
-                    filteredStations = filteredStations.Where(x => x.RegionId == filterRegionId);
-                if (isBoardingStation != null)
-                    filteredStations = filteredStations.Where(x => x.BoardingStation == isBoardingStation);
-
-                return filteredStations;
-            }
+            return stations;
         }
         public void UpdateOrder(int stationId, int order)
         {
             var station = stationRepository.FindById(stationId);
-            
+
             station.Order = order;
 
             stationRepository.Update(station);

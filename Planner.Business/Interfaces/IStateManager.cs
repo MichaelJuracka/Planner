@@ -1,4 +1,5 @@
 ﻿using Planner.Data.Models;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Planner.Business.Interfaces
@@ -8,5 +9,6 @@ namespace Planner.Business.Interfaces
         State Add(string name);
         ObservableCollection<State> GetAll();
         void Delete(int StateId);
+        IEnumerable<State> FilterStates(IEnumerable<State> states, string id, string name);
     }
 }

@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="220"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -40,19 +40,37 @@
             <TextBox Grid.Row="2" Grid.Column="1" Name="ownerNameTextBox" VerticalAlignment="Center" Width="150" HorizontalAlignment="Left"/>
             <TextBox Grid.Row="3" Grid.Column="1" Name="ownerEmailTextBox" VerticalAlignment="Center" Width="150" HorizontalAlignment="Left"/>
 
-            <Button Name="filterOwnerButton" Content="Vyhledat" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="80 0 0 0" Padding="10 2 10 2" Click="filterOwnerButton_Click"/>
+            <Button Name="filterOwnerButton" Content="Vyhledat" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="80 0 0 0" Padding="10 2 10 2" Click="filterOwnerButton_Click" IsDefault="True"/>
 
         </Grid>
         <!--#endregion-->
 
         <!--#region Update -->
         <Grid Grid.Column="1" Grid.RowSpan="2" TextBlock.FontSize="14" TextBlock.FontWeight="Medium">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Jméno" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Email" VerticalAlignment="Center"/>
+
+            <TextBox Grid.Row="1" Grid.Column="1" Name="nameTextBox" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Name="emailTextBox" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left"/>
+
+            <Button Name="updateButton" Content="Uložit" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 10 50 0" Padding="5 0 5 0" Click="updateButton_Click"/>
 
         </Grid>
         <!--#endregion-->
 
 
-        <DataGrid Name="dataGridOwners" IsReadOnly="True" Grid.Row="1" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" AlternatingRowBackground="LightGray">
+        <DataGrid Name="dataGridOwners" IsReadOnly="True" Grid.Row="1" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" AlternatingRowBackground="LightGray" SelectionChanged="dataGridOwners_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Width="40" Binding="{Binding OwnerId}"/>
                 <DataGridTextColumn Header="Název" Width="*" Binding="{Binding Name}"/>

@@ -108,42 +108,34 @@ namespace Planner.Business.Managers
             route.OrderCreated = orderCreated;
             routeRepository.Update(route);
         }
-        public IEnumerable<Route> FilterRoutes(IEnumerable<Route> routes, DateTime? fromDate, DateTime? toDate, string Id, State state, Region region,bool routeTo, bool routeFrom, bool? filterOrderCreated = null, bool? filterAgendaCreated = null, bool? filterBoardingRoute = null)
+        public IEnumerable<Route> FilterRoutes(IEnumerable<Route> routes, DateTime? fromDate, DateTime? toDate, string id, State state, Region region,bool routeTo, bool routeFrom, bool? filterOrderCreated = null, bool? filterAgendaCreated = null, bool? filterBoardingRoute = null)
         {
-            DateTime? filterDateFrom = fromDate;
-            DateTime? filterDateTo = toDate;
-            int? filterId = null;
-            if (Id.Length != 0)
-                filterId = int.Parse(Id);
-
-            IEnumerable<Route> filterRoutes = routes;
-
-            if (filterDateFrom == null && filterDateTo == null && filterId == null && state.StateId ==  0 && region.RegionId == 0 && filterOrderCreated == null && filterAgendaCreated == null && filterBoardingRoute == null && routeTo == true && routeFrom == true)
+            if (fromDate == null && toDate == null && id.Length == 0 && state.StateId == 0 && region.RegionId == 0 && filterOrderCreated == null && filterAgendaCreated == null && filterBoardingRoute == null && routeTo == true && routeFrom == true)
                 return routes;
             else
             {
-                if (filterDateFrom != null)
-                    filterRoutes = filterRoutes.Where(x => x.DepartureDate >= filterDateFrom);
-                if (filterDateTo != null)
-                    filterRoutes = filterRoutes.Where(x => x.DepartureDate <= filterDateTo);
-                if (filterId != null)
-                    filterRoutes = filterRoutes.Where(x => x.RouteId == filterId);
+                if (fromDate != null)
+                    routes = routes.Where(x => x.DepartureDate >= fromDate);
+                if (toDate != null)
+                    routes = routes.Where(x => x.DepartureDate <= toDate);
+                if (id.Length != 0)
+                    routes = routes.Where(x => x.RouteId == int.Parse(id));
                 if (state.StateId != 0)
-                    filterRoutes = filterRoutes.Where(x => x.StateId == state.StateId);
+                    routes = routes.Where(x => x.StateId == state.StateId);
                 if (region.RegionId != 0)
-                    filterRoutes = filterRoutes.Where(x => x.RegionId == region.RegionId);
+                    routes = routes.Where(x => x.RegionId == region.RegionId);
                 if (filterOrderCreated != null)
-                    filterRoutes = filterRoutes.Where(x => x.OrderCreated == filterOrderCreated);
+                    routes = routes.Where(x => x.OrderCreated == filterOrderCreated);
                 if (filterAgendaCreated != null)
-                    filterRoutes = filterRoutes.Where(x => x.AgendaCreated == filterAgendaCreated);
+                    routes = routes.Where(x => x.AgendaCreated == filterAgendaCreated);
                 if (filterBoardingRoute != null)
-                    filterRoutes = filterRoutes.Where(x => x.BoardingRoute == filterBoardingRoute);
+                    routes = routes.Where(x => x.BoardingRoute == filterBoardingRoute);
                 if (routeTo == false)
-                    filterRoutes = filterRoutes.Where(x => x.RouteBack == true);
+                    routes = routes.Where(x => x.RouteBack == true);
                 if (routeFrom == false)
-                    filterRoutes = filterRoutes.Where(x => x.RouteBack == false);
+                    routes = routes.Where(x => x.RouteBack == false);
 
-                return filterRoutes;
+                return routes;
             }
         }
     }

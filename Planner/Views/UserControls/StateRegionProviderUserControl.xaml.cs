@@ -26,7 +26,6 @@ namespace Planner.Views.UserControls
         private IStateManager stateManager;
         private IRegionManager regionManager;
         private IProviderManager providerManager;
-        private IOwnerManager ownerManager;
         private MainWindow mainWindow;
 
         private readonly Regex regex = new Regex("[^0-9.-]+");
@@ -42,12 +41,11 @@ namespace Planner.Views.UserControls
             regionStateComboBox.ItemsSource = mainWindow.FilterStates;
             regionStateComboBox.SelectedIndex = 0;
         }
-        public void InitManagers(IStateManager stateManager, IRegionManager regionManager, IProviderManager providerManager, IOwnerManager ownerManager, MainWindow mainWindow)
+        public void InitManagers(IStateManager stateManager, IRegionManager regionManager, IProviderManager providerManager, MainWindow mainWindow)
         {
             this.stateManager = stateManager;
             this.regionManager = regionManager;
             this.providerManager = providerManager;
-            this.ownerManager = ownerManager;
             this.mainWindow = mainWindow;
         }
         #region StateFilter
@@ -57,26 +55,7 @@ namespace Planner.Views.UserControls
         }
         private void filterStateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (stateIdTextBox.Text.Length == 0 && stateNameTextBox.Text.Length == 0)
-                dataGridStates.ItemsSource = mainWindow.States;
-            else
-            {
-                IEnumerable<State> filteredStates = mainWindow.States;
-                int? filterId = null;
-                string filterName = null;
-
-                if (stateIdTextBox.Text.Length != 0)
-                    filterId = int.Parse(stateIdTextBox.Text);
-                if (stateNameTextBox.Text.Length != 0)
-                    filterName = stateNameTextBox.Text.ToLower();
-
-                if (filterId != null)
-                    filteredStates = filteredStates.Where(x => x.StateId == filterId);
-                if (filterName != null)
-                    filteredStates = filteredStates.Where(x => x.Name.ToLower().Contains(filterName));
-
-                dataGridStates.ItemsSource = filteredStates;
-            }
+            dataGridStates.ItemsSource = stateManager.FilterStates(mainWindow.States, stateIdTextBox.Text, stateNameTextBox.Text);
         }
         #endregion
         #region RegionFilter
@@ -87,28 +66,7 @@ namespace Planner.Views.UserControls
         private void filterRegionsButton_Click(object sender, RoutedEventArgs e)
         {
             var state = (State)regionStateComboBox.SelectedItem;
-            if (regionIdTextBox.Text.Length == 0 && regionNameTextBox.Text.Length == 0 && state.StateId == 0)
-                dataGridRegions.ItemsSource = mainWindow.Regions;
-
-            IEnumerable<Region> filteredRegions = mainWindow.Regions;
-            int? filterId = null;
-            string filterName = null;
-            int? stateId = null;
-
-            if (regionIdTextBox.Text.Length != 0)
-                filterId = int.Parse(regionIdTextBox.Text);
-            if (regionNameTextBox.Text.Length != 0)
-                filterName = regionNameTextBox.Text.ToLower();
-            stateId = state.StateId;
-
-            if (filterId != null)
-                filteredRegions = filteredRegions.Where(x => x.RegionId == filterId);
-            if (filterName != null)
-                filteredRegions = filteredRegions.Where(x => x.Name.ToLower().Contains(filterName));
-            if (stateId != 0)
-                filteredRegions = filteredRegions.Where(x => x.StateId == stateId);
-
-            dataGridRegions.ItemsSource = filteredRegions;
+            dataGridRegions.ItemsSource = regionManager.FilterRegion(mainWindow.Regions, regionIdTextBox.Text, regionNameTextBox.Text, state);
         }
         #endregion
         #region ProviderFilter
@@ -118,26 +76,7 @@ namespace Planner.Views.UserControls
         }
         private void filterProviderButton_Click(object sender, RoutedEventArgs e)
         {
-            if (providerIdTextBox.Text.Length == 0 && providerNameTextBox.Text.Length == 0)
-                dataGridProviders.ItemsSource = mainWindow.Providers;
-            else
-            {
-                IEnumerable<Provider> filteredProviders = mainWindow.Providers;
-                int? filterId = null;
-                string filterName = null;
-
-                if (providerIdTextBox.Text.Length != 0)
-                    filterId = int.Parse(providerIdTextBox.Text);
-                if (providerNameTextBox.Text.Length != 0)
-                    filterName = providerNameTextBox.Text.ToLower();
-
-                if (filterId != null)
-                    filteredProviders = filteredProviders.Where(x => x.ProviderId == filterId);
-                if (filterName != null)
-                    filteredProviders = filteredProviders.Where(x => x.Name.ToLower().Contains(filterName));
-
-                dataGridProviders.ItemsSource = filteredProviders;
-            }
+            dataGridProviders.ItemsSource = providerManager.FilterProviders(mainWindow.Providers, providerIdTextBox.Text, providerNameTextBox.Text);
         }
         #endregion
     }

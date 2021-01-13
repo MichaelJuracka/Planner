@@ -62,9 +62,8 @@ namespace Planner.Views.UserControls
         }
         private void dataGridStation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (dataGridStation.SelectedItem is Station)
+            if (dataGridStation.SelectedItem is Station station)
             {
-                var station = (Station)dataGridStation.SelectedItem;
                 nameTextbox.Text = station.Name;
                 departureTimeTextbox.Text = station.DepartureTime;
                 departurePlaceTextbox.Text = station.DeparturePlace;

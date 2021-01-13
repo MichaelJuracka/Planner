@@ -135,6 +135,8 @@ namespace Planner.Views.DetailViews
         private void filterButton_Click(object sender, RoutedEventArgs e)
         {
             var region = (Region)filterRegionComboBox.SelectedItem;
+            if (region.RegionId == 0)
+                region = null;
             passengerDataGrid.ItemsSource = SortPassengersByStations(route, passengerManager.FilterPassengers(Passengers, filterIdTextBox.Text, filterBusinessCaseTextBox.Text, filterNameTextBox.Text, filterSecondNameTextBox.Text, region: region));
         }
         private void filterBusinessCaseTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -177,7 +179,6 @@ namespace Planner.Views.DetailViews
             {
                 passenger = passengerManager.Update(passenger, firstNameTextBox.Text, secondNameTextBox.Text, phoneTextBox.Text, emailTextBox.Text, additionalInfoTextBox.Text, boardingStation, exitStation);
                 passengerDataGrid.SelectedItem = passenger;
-
                 passengerDataGrid.Items.Refresh();
                 RenderStationCounts();
             }
@@ -258,7 +259,7 @@ namespace Planner.Views.DetailViews
                 RenderStationCounts();
                 numberOfMarked.Text = Passengers.Count().ToString();
             }
-        } 
+        }
         #endregion
         #region SortOut, Clearance
         private void sortOutButton_Click(object sender, RoutedEventArgs e)
@@ -270,8 +271,7 @@ namespace Planner.Views.DetailViews
                 return;
             }
 
-            ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow);
-            chooseRoute.routeDataGrid.ItemsSource = mainWindow.Routes.Where(x => x.IsRealRoute == true && x.DepartureDate == route.DepartureDate);
+            ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow.Routes.Where(x => x.IsRealRoute == true && x.DepartureDate == route.DepartureDate), mainWindow);
             chooseRoute.ShowDialog();
 
             if (chooseRoute.route != null && chooseRoute.route.BusTypeId != null)
@@ -281,21 +281,13 @@ namespace Planner.Views.DetailViews
                     MessageBox.Show("V této jízdě je příliš cestujících");
                     return;
                 }
-                try
+                ObservableCollection<Passenger> collection = new ObservableCollection<Passenger>(mainWindow.PassengersDictionary[chooseRoute.route]);
+                foreach (Passenger p in passengers)
                 {
-                    foreach (Passenger p in passengers)
-                    {
-                        passengerManager.UpdateRoute(p, chooseRoute.route, true, false);
-                        ObservableCollection<Passenger> collection =  new ObservableCollection<Passenger>(mainWindow.PassengersDictionary[chooseRoute.route]);
-                        collection.Add(p);
-                        mainWindow.PassengersDictionary[chooseRoute.route] = collection;
-                    }
+                    passengerManager.UpdateRoute(p, chooseRoute.route, true, false);
+                    collection.Add(p);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-
+                mainWindow.PassengersDictionary[chooseRoute.route] = collection;
                 passengerDataGrid.Items.Refresh();
             }
 
@@ -309,8 +301,7 @@ namespace Planner.Views.DetailViews
                 return;
             }
 
-            ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow);
-            chooseRoute.routeDataGrid.ItemsSource = mainWindow.Routes.Where(x => x.BoardingRoute == true && x.DepartureDate == route.DepartureDate);
+            ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow.Routes.Where(x => x.BoardingRoute == true && x.DepartureDate == route.DepartureDate), mainWindow);
             chooseRoute.ShowDialog();
 
             if (chooseRoute.route != null)
@@ -384,8 +375,7 @@ namespace Planner.Views.DetailViews
             {
                 string fileName = "Objednávka autobusu " + route.LicensePlate + " " + route.DepartureDate.ToShortDateString();
 
-                ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow);
-                chooseRoute.routeDataGrid.ItemsSource = mainWindow.Routes.Where(x => x.IsRealRoute && x.DepartureDate.AddDays(1) == route.DepartureDate);
+                ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow.Routes.Where(x => x.IsRealRoute && x.DepartureDate.AddDays(1) == route.DepartureDate), mainWindow);
                 chooseRoute.ShowDialog();
                 if (chooseRoute.route == null)
                     return;
