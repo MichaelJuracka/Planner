@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Planner.Views.UserControls.OwnerUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Planner.Views.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="350"/>
+        </Grid.ColumnDefinitions>
+
+        <!--#region Filter -->
+        <Grid Grid.Row="0" Grid.Column="0" TextBlock.FontSize="14" TextBlock.FontWeight="Medium" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Filtr dopravci" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Id" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Název" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Email" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+            <TextBox Grid.Row="1" Grid.Column="1" Name="ownerIdTextBox" VerticalAlignment="Bottom" Width="150" HorizontalAlignment="Left" PreviewTextInput="ownerIdTextBox_PreviewTextInput"  />
+            <TextBox Grid.Row="2" Grid.Column="1" Name="ownerNameTextBox" VerticalAlignment="Center" Width="150" HorizontalAlignment="Left"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Name="ownerEmailTextBox" VerticalAlignment="Center" Width="150" HorizontalAlignment="Left"/>
+
+            <Button Name="filterOwnerButton" Content="Vyhledat" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="80 0 0 0" Padding="10 2 10 2" Click="filterOwnerButton_Click"/>
+
+        </Grid>
+        <!--#endregion-->
+
+        <!--#region Update -->
+        <Grid Grid.Column="1" Grid.RowSpan="2" TextBlock.FontSize="14" TextBlock.FontWeight="Medium">
+
+        </Grid>
+        <!--#endregion-->
+
+
+        <DataGrid Name="dataGridOwners" IsReadOnly="True" Grid.Row="1" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" AlternatingRowBackground="LightGray">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Width="40" Binding="{Binding OwnerId}"/>
+                <DataGridTextColumn Header="Název" Width="*" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Email" Width="*" Binding="{Binding Email}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</UserControl>

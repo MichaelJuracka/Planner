@@ -1,4 +1,4 @@
-﻿C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\obj\Debug\GeneratedInternalTypeHelper.g.cs
+﻿
 
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\MainWindow.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\AddViews\AddOwner.xaml;;
@@ -15,6 +15,7 @@ FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\ImportViews\ImportPassenger.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\ImportViews\ImportStation.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\SettingViews\StationOrder.xaml;;
+FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\UserControls\OwnerUserControl.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\UserControls\PassengerUserControl.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\UserControls\RouteUserControl.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\UserControls\StateRegionProviderUserControl.xaml;;

@@ -315,14 +315,13 @@ namespace Planner.Views.DetailViews
 
             if (chooseRoute.route != null)
             {
+                ObservableCollection<Passenger> collection = new ObservableCollection<Passenger>(mainWindow.PassengersDictionary[chooseRoute.route]);
                 foreach (Passenger p in passengers)
                 {
                     passengerManager.UpdateRoute(p, chooseRoute.route, false, true);
-                    ObservableCollection<Passenger> collection = new ObservableCollection<Passenger>(mainWindow.PassengersDictionary[chooseRoute.route]);
                     collection.Add(p);
-                    mainWindow.PassengersDictionary[chooseRoute.route] = collection;
                 }
-
+                mainWindow.PassengersDictionary[chooseRoute.route] = collection;
                 passengerDataGrid.Items.Refresh();
             }
         }

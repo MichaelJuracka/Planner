@@ -131,6 +131,7 @@ namespace Planner
             ucStation.Visibility = Visibility.Hidden;
             uCStateRegionProvider.Visibility = Visibility.Hidden;
             uCPassenger.Visibility = Visibility.Hidden;
+            ucOwnerMenu.Visibility = Visibility.Hidden;
             busImage.Visibility = Visibility.Hidden;
         }
         private void Home_Click(object sender, RoutedEventArgs e)
@@ -158,6 +159,11 @@ namespace Planner
         {
             SetUCsVisibility();
             uCPassenger.Visibility = Visibility.Visible;
+        }
+        private void ucOwnerMenu_Click_1(object sender, RoutedEventArgs e)
+        {
+            SetUCsVisibility();
+            
         }
         #endregion
         #region Tab New
@@ -224,5 +230,6 @@ namespace Planner
                 PassengersDictionary.Add(route, Passengers.Where(x => x.RouteId == route.RouteId));
         }
         #endregion
+
     }
 }

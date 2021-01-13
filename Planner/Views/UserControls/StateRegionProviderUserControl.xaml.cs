@@ -39,7 +39,6 @@ namespace Planner.Views.UserControls
             dataGridStates.ItemsSource = mainWindow.States;
             dataGridRegions.ItemsSource = mainWindow.Regions;
             dataGridProviders.ItemsSource = mainWindow.Providers;
-            dataGridOwners.ItemsSource = mainWindow.Owners;
             regionStateComboBox.ItemsSource = mainWindow.FilterStates;
             regionStateComboBox.SelectedIndex = 0;
         }
@@ -140,23 +139,6 @@ namespace Planner.Views.UserControls
                 dataGridProviders.ItemsSource = filteredProviders;
             }
         }
-        #endregion
-        #region OwnerFilter
-        private void ownerIdTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = regex.IsMatch(e.Text);
-        }
-        private void filterOwnerButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                dataGridOwners.ItemsSource = ownerManager.FilterOwners(mainWindow.Owners, ownerNameTextBox.Text, ownerIdTextBox.Text);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        } 
         #endregion
     }
 }

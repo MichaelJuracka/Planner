@@ -185,6 +185,9 @@
     <Compile Include="Views\SettingViews\StationOrder.xaml.cs">
       <DependentUpon>StationOrder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserControls\OwnerUserControl.xaml.cs">
+      <DependentUpon>OwnerUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserControls\PassengerUserControl.xaml.cs">
       <DependentUpon>PassengerUserControl.xaml</DependentUpon>
     </Compile>
@@ -262,6 +265,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingViews\StationOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\OwnerUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

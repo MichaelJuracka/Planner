@@ -7,8 +7,7 @@
         xmlns:CustomUC="clr-namespace:Planner.Views.UserControls"
         mc:Ignorable="d"
         Title="Planovač jízd" Height="900" Width="1300" Loaded="Window_Loaded"
-        WindowState="Maximized"
-        >
+        WindowState="Maximized">
     <Grid Margin="5 0 5 5">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -79,6 +78,9 @@
                         <Image Source="/Images/stationIcon.ico"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Header="Prodejci" Name="ucOwnerMenu" Click="ucOwnerMenu_Click_1">
+                    
+                </MenuItem>
                 <MenuItem Header="Státy, Oblasti, Dopravci" Name="uCStateRegionProviderMenu" Click="uCStateRegionProviderMenu_Click" >
                     <MenuItem.Icon>
                         <Image Source="/Images/stateIcon.ico"/>
@@ -100,7 +102,6 @@
             <CustomUC:StationUserControl x:Name="ucStation" Visibility="Hidden"></CustomUC:StationUserControl>
             <CustomUC:StateRegionProviderUserControl x:Name="uCStateRegionProvider" Visibility="Hidden"></CustomUC:StateRegionProviderUserControl>
             <CustomUC:PassengerUserControl x:Name="uCPassenger" Visibility="Hidden"></CustomUC:PassengerUserControl>
-            
         </Grid>
 
         <Grid Visibility="Visible" Background="LightGray" Grid.Row="2">

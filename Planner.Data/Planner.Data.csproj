@@ -140,6 +140,10 @@
     <Compile Include="Migrations\202101122216281_add_owner_2.designer.cs">
       <DependentUpon>202101122216281_add_owner_2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101131615441_update_owners_2.cs" />
+    <Compile Include="Migrations\202101131615441_update_owners_2.designer.cs">
+      <DependentUpon>202101131615441_update_owners_2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\InitialData.cs" />
     <Compile Include="Models\BusType.cs" />
@@ -224,6 +228,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101122216281_add_owner_2.resx">
       <DependentUpon>202101122216281_add_owner_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101131615441_update_owners_2.resx">
+      <DependentUpon>202101131615441_update_owners_2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\App.xaml
-19-1095191263
+20136225034
 
-23-1373824078
+24890955342
 44-738729925
-MainWindow.xaml;Views\AddViews\AddOwner.xaml;Views\AddViews\AddPassenger.xaml;Views\AddViews\AddProvider.xaml;Views\AddViews\AddRegion.xaml;Views\AddViews\AddRoute.xaml;Views\AddViews\AddState.xaml;Views\AddViews\AddStation.xaml;Views\ChooseViews\ChooseRoute.xaml;Views\ChooseViews\ChooseStation.xaml;Views\DetailViews\ClearanceViews\DepartureTimeView.xaml;Views\DetailViews\RouteDetail.xaml;Views\ImportViews\ImportPassenger.xaml;Views\ImportViews\ImportStation.xaml;Views\SettingViews\StationOrder.xaml;Views\UserControls\PassengerUserControl.xaml;Views\UserControls\RouteUserControl.xaml;Views\UserControls\StateRegionProviderUserControl.xaml;Views\UserControls\StationUserControl.xaml;
+MainWindow.xaml;Views\AddViews\AddOwner.xaml;Views\AddViews\AddPassenger.xaml;Views\AddViews\AddProvider.xaml;Views\AddViews\AddRegion.xaml;Views\AddViews\AddRoute.xaml;Views\AddViews\AddState.xaml;Views\AddViews\AddStation.xaml;Views\ChooseViews\ChooseRoute.xaml;Views\ChooseViews\ChooseStation.xaml;Views\DetailViews\ClearanceViews\DepartureTimeView.xaml;Views\DetailViews\RouteDetail.xaml;Views\ImportViews\ImportPassenger.xaml;Views\ImportViews\ImportStation.xaml;Views\SettingViews\StationOrder.xaml;Views\UserControls\OwnerUserControl.xaml;Views\UserControls\PassengerUserControl.xaml;Views\UserControls\RouteUserControl.xaml;Views\UserControls\StateRegionProviderUserControl.xaml;Views\UserControls\StationUserControl.xaml;
 
 False
 
