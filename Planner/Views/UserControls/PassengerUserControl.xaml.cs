@@ -44,11 +44,15 @@ namespace Planner.Views.UserControls
         public void InitGrid()
         {
             passengerDataGrid.ItemsSource = mainWindow.Passengers;
+            ownerComboBox.ItemsSource = mainWindow.Owners;
+            filterOwnerComboBox.ItemsSource = mainWindow.FilterOwners;
+            filterOwnerComboBox.SelectedIndex = 0;
         }
         #region Filter
         private void filterButton_Click(object sender, RoutedEventArgs e)
         {
-            passengerDataGrid.ItemsSource = passengerManager.FilterPassengers(mainWindow.Passengers, filterIdTextBox.Text, filterBusinessCaseTextBox.Text, filterFirstNameTextBox.Text, filterSecondNameTextBox.Text, fromDatePicker.SelectedDate, toDatePicker.SelectedDate);
+            var owner = (Owner)filterOwnerComboBox.SelectedItem;
+            passengerDataGrid.ItemsSource = passengerManager.FilterPassengers(mainWindow.Passengers, filterIdTextBox.Text, filterBusinessCaseTextBox.Text, filterFirstNameTextBox.Text, filterSecondNameTextBox.Text, owner, fromDatePicker.SelectedDate, toDatePicker.SelectedDate);
         }
         private void filterNameTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -62,9 +66,8 @@ namespace Planner.Views.UserControls
         #region Update
         private void passengerDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (passengerDataGrid.SelectedItem is Passenger)
+            if (passengerDataGrid.SelectedItem is Passenger passenger)
             {
-                var passenger = (Passenger)passengerDataGrid.SelectedItem;
                 firstNameTextBox.Text = passenger.FirstName;
                 secondNameTextBox.Text = passenger.SecondName;
                 phoneTextBox.Text = passenger.Phone;
@@ -76,15 +79,17 @@ namespace Planner.Views.UserControls
                 exitStationTextBlock.Visibility = Visibility.Visible;
                 boardingStation = passenger.BoardingStation;
                 exitStation = passenger.ExitStation;
+                ownerComboBox.SelectedItem = mainWindow.Owners.SingleOrDefault(x => x.OwnerId == passenger.OwnerId);
             }
         }
         private void updateButton_Click(object sender, RoutedEventArgs e)
         {
             var passenger = (Passenger)passengerDataGrid.SelectedItem;
+            var owner = (Owner)ownerComboBox.SelectedItem;
 
             try
             {
-                passengerDataGrid.SelectedItem = passengerManager.Update(passenger, firstNameTextBox.Text, secondNameTextBox.Text, phoneTextBox.Text, emailTextBox.Text, additionalInfoTextBox.Text, boardingStation, exitStation);
+                passengerDataGrid.SelectedItem = passengerManager.Update(passenger, firstNameTextBox.Text, secondNameTextBox.Text, phoneTextBox.Text, emailTextBox.Text, additionalInfoTextBox.Text, boardingStation, exitStation, owner);
                 passengerDataGrid.Items.Refresh();
             }
             catch (Exception ex)
@@ -94,8 +99,7 @@ namespace Planner.Views.UserControls
         }
         private void chooseBoardingStationButton_Click(object sender, RoutedEventArgs e)
         {
-            ChooseStation chooseStation = new ChooseStation(stationManager, mainWindow);
-            chooseStation.stationDataGrid.ItemsSource = mainWindow.Stations.Where(x => x.BoardingStation == true);
+            ChooseStation chooseStation = new ChooseStation(stationManager, mainWindow.Stations.Where(x => x.BoardingStation), mainWindow);
             chooseStation.ShowDialog();
             if (chooseStation.station != null)
             {
@@ -105,8 +109,7 @@ namespace Planner.Views.UserControls
         }
         private void chooseExitStationButton_Click(object sender, RoutedEventArgs e)
         {
-            ChooseStation chooseStation = new ChooseStation(stationManager, mainWindow);
-            chooseStation.stationDataGrid.ItemsSource = mainWindow.Stations.Where(x => x.BoardingStation == false);
+            ChooseStation chooseStation = new ChooseStation(stationManager, mainWindow.Stations.Where(x => !x.BoardingStation), mainWindow);
             chooseStation.ShowDialog();
             if (chooseStation.station != null)
             {

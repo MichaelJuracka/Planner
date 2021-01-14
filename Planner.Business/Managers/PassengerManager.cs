@@ -68,9 +68,9 @@ namespace Planner.Business.Managers
         {
             return passengerRepository.GetAll();
         }
-        public IEnumerable<Passenger> FilterPassengers(IEnumerable<Passenger> passengers, string id, string businessCase, string firstName, string secondName, DateTime? dateFrom = null, DateTime? dateTo = null, Region region = null)
+        public IEnumerable<Passenger> FilterPassengers(IEnumerable<Passenger> passengers, string id, string businessCase, string firstName, string secondName, Owner owner, DateTime? dateFrom = null, DateTime? dateTo = null, Region region = null)
         {
-            if (id.Length == 0 && businessCase.Length == 0 && firstName.Length == 0 && secondName.Length == 0 && dateFrom == null && dateTo == null && region == null)
+            if (id.Length == 0 && businessCase.Length == 0 && firstName.Length == 0 && secondName.Length == 0 && dateFrom == null && dateTo == null && region == null && owner.OwnerId == 0)
                 return passengers;
 
             if (id.Length != 0)
@@ -81,6 +81,8 @@ namespace Planner.Business.Managers
                 passengers = passengers.Where(x => x.FirstName.ToLower().Contains(firstName.ToLower()));
             if (secondName.Length != 0)
                 passengers = passengers.Where(x => x.SecondName.ToLower().Contains(secondName.ToLower()));
+            if (owner.OwnerId != 0)
+                passengers = passengers.Where(x => x.OwnerId == owner.OwnerId);
             if (dateFrom != null)
                 passengers = passengers.Where(x => x.Route.DepartureDate >= dateFrom);
             if (dateTo != null)
@@ -90,7 +92,7 @@ namespace Planner.Business.Managers
 
             return passengers;
         }
-        public Passenger Update(Passenger passenger, string firstName, string secondName, string phone, string email, string additionalInformation, Station boardingStation, Station exitStation)
+        public Passenger Update(Passenger passenger, string firstName, string secondName, string phone, string email, string additionalInformation, Station boardingStation, Station exitStation, Owner owner)
         {
 
             if (firstName.Length == 0)
@@ -107,6 +109,8 @@ namespace Planner.Business.Managers
                 throw new ArgumentException("Vyberte nástupní stanici");
             if (exitStation == null)
                 throw new ArgumentException("Vyberte výstupní stanici");
+            if (owner == null)
+                throw new ArgumentException("Vyberte prodejce");
 
             passenger.FirstName = firstName;
             passenger.SecondName = secondName;
@@ -115,6 +119,7 @@ namespace Planner.Business.Managers
             passenger.AdditionalInformation = additionalInformation;
             passenger.BoardingStationId = boardingStation.StationId;
             passenger.ExitStationId = exitStation.StationId;
+            passenger.Owner = owner;
 
             passengerRepository.Update(passenger);
 

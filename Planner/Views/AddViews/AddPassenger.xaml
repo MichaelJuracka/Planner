@@ -23,7 +23,6 @@
             <RowDefinition Height="60"/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -35,9 +34,8 @@
         <TextBlock Text="Dodatečné informace:" Grid.Row="5" VerticalAlignment="Center"/>
         <TextBlock Text="Vlastník:" Grid.Row="6" VerticalAlignment="Center"/>
         <TextBlock Text="Jízda:" Grid.Row="7" VerticalAlignment="Center"/>
-        <TextBlock Text="Svozová jízda:" Grid.Row="8" VerticalAlignment="Center"/>
-        <TextBlock Text="Nástupní stanice:" Grid.Row="9" VerticalAlignment="Center" Name="boardingTextBlock"/>
-        <TextBlock Text="Výstupní stanice:" Grid.Row="10" VerticalAlignment="Center" Name="exitTextBlock"/>
+        <TextBlock Text="Nástupní stanice:" Grid.Row="8" VerticalAlignment="Center" Name="boardingTextBlock"/>
+        <TextBlock Text="Výstupní stanice:" Grid.Row="9" VerticalAlignment="Center" Name="exitTextBlock"/>
 
         <TextBox Name="businesCaseTextBox" Grid.Row="0" Grid.Column="1" PreviewTextInput="bussinesCaseTextBox_PreviewTextInput" Margin="5" TextAlignment="Left"/>
         <TextBox Name="firstNameTextBox" Grid.Row="1" Grid.Column="1" Margin="5" TextAlignment="Left"/>
@@ -51,19 +49,15 @@
             <Button Name="chooseRouteButton" Content="Vybrat jízdu" Margin="0 8 0 0" Padding="5 0 5 0" Click="chooseRouteButton_Click"/>
         </StackPanel>
         <StackPanel Grid.Row="8" Grid.Column="1" HorizontalAlignment="Left" Orientation="Vertical" Margin="5">
-            <TextBlock Name="boardingRouteTextBlock" Visibility="Hidden"/>
-            <Button Name="chooseBoardingRouteButton" Content="Vybrat svozovou jízdu" Margin="0 8 0 0" Padding="5 0 5 0" Click="chooseBoardingRouteButton_Click"/>
-        </StackPanel>
-        <StackPanel Grid.Row="9" Grid.Column="1" HorizontalAlignment="Left" Orientation="Vertical" Margin="5">
             <TextBlock Name="boardingStationTextBlock" Visibility="Hidden" HorizontalAlignment="Left"/>
             <Button Name="chooseBoardingStationButton" Content="Vybrat nástupní stanici" Margin="0 8 0 0" Padding="5 0 5 0" Click="chooseBoardingStationButton_Click"/>
         </StackPanel>
-        <StackPanel Grid.Row="10" Grid.Column="1" HorizontalAlignment="Left" Orientation="Vertical" Margin="5">
+        <StackPanel Grid.Row="9" Grid.Column="1" HorizontalAlignment="Left" Orientation="Vertical" Margin="5">
             <TextBlock Name="exitStationTextBlock" Visibility="Hidden" HorizontalAlignment="Left"/>
             <Button Name="chooseExitStationButton" Content="Vybrat výstupní stanici" Margin="0 8 0 0" Padding="5 0 5 0" Click="chooseExitStationButton_Click"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="11" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+        <StackPanel Grid.Row="10" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
             <Button Name="submitButton" Content="Přidej" Padding="10 5 10 5" IsDefault="True" Click="submitButton_Click"/>
             <Button Name="cancelButton" Content="Zrušit" Padding="10 5 10 5" Margin="8 0 0 0" Click="cancelButton_Click"/>
         </StackPanel>

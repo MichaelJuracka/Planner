@@ -21,15 +21,19 @@ namespace Planner.Views.ChooseViews
     /// </summary>
     public partial class ChooseStation : Window
     {
-        private IStationManager stationManager;
-        private MainWindow mainWindow;
+        private readonly IStationManager stationManager;
+        private readonly MainWindow mainWindow;
+        private readonly IEnumerable<Station> stations;
         public Station station = null;
-        public ChooseStation(IStationManager stationManager, MainWindow mainWindow)
+        public ChooseStation(IStationManager stationManager, IEnumerable<Station> stations, MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
             this.stationManager = stationManager;
+            this.stations = stations;
 
             InitializeComponent();
+
+            stationDataGrid.ItemsSource = stations;
         }
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
@@ -49,7 +53,7 @@ namespace Planner.Views.ChooseViews
         private void filterButton_Click(object sender, RoutedEventArgs e)
         {
             var region = (Region)filterRegionComboBox.SelectedItem;
-            stationDataGrid.ItemsSource = stationManager.FilterStations(mainWindow.Stations, "", filterNameTextBox.Text, region);
+            stationDataGrid.ItemsSource = stationManager.FilterStations(stations, "", filterNameTextBox.Text, region);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

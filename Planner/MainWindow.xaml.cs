@@ -54,6 +54,7 @@ namespace Planner
         public ObservableCollection<Passenger> Passengers { get; set; }
         public Dictionary<Route, IEnumerable<Passenger>> PassengersDictionary { get; set; }
         public ObservableCollection<Owner> Owners { get; set; }
+        public ObservableCollection<Owner> FilterOwners { get; set; }
         #endregion
 
         private readonly BackgroundWorker backgroundWorker;
@@ -96,6 +97,7 @@ namespace Planner
             FilterRegions.Insert(0, new Region() { Name = "Všechny", RegionId = 0, StateId = 7});
             FilterStates.Insert(0, new State() { Name = "Všechny", StateId = 0 });
             FilterProviders.Insert(0, new Provider() { Name = "Všichni", ProviderId = 0 });
+            FilterOwners.Insert(0, new Owner() { Name = "Všichni", OwnerId = 0 });
             ucStation.InitGrid();
             uCStateRegionProvider.InitGrid();
             ucRoute.InitGrid();
@@ -117,6 +119,7 @@ namespace Planner
             BusTypes = busTypeManager.GetAll();
             Passengers = passengerManager.GetAll();
             Owners = ownerManager.GetAll();
+            FilterOwners = ownerManager.GetAll();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

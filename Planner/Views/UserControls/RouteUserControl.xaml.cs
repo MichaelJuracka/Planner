@@ -64,6 +64,7 @@ namespace Planner.Views.UserControls
             {
                 licensePlateTextBox.Text = selectedRoute.LicensePlate;
                 busTypeComboBox.ItemsSource = mainWindow.BusTypes;
+                busTypeComboBox.SelectedItem = mainWindow.BusTypes.SingleOrDefault(x => x.BusTypeId == selectedRoute.BusTypeId);
                 busTypeComboBox.SelectedIndex = 0;
                 providerComboBox.ItemsSource = mainWindow.Providers;
                 providerComboBox.SelectedItem = mainWindow.Providers.SingleOrDefault(x => x.ProviderId == selectedRoute.ProviderId);

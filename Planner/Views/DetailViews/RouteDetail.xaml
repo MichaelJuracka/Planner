@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="210"/>
+            <RowDefinition Height="245"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
@@ -33,6 +33,7 @@
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -41,14 +42,16 @@
             <TextBlock Text="Jméno" VerticalAlignment="Center" Grid.Row="2"/>
             <TextBlock Text="Přijmení" VerticalAlignment="Center" Grid.Row="3"/>
             <TextBlock Text="Oblast nástupního místa" VerticalAlignment="Center" Grid.Row="4"/>
+            <TextBlock Text="Prodejce" VerticalAlignment="Center" Grid.Row="5"/>
 
             <TextBox Name="filterIdTextBox" VerticalAlignment="Center" Grid.Column="1" Margin="5" HorizontalAlignment="Left" Width="250" PreviewTextInput="filterIdTextBox_PreviewTextInput"/>
             <TextBox Name="filterBusinessCaseTextBox" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="5" Width="250" HorizontalAlignment="Left" PreviewTextInput="filterBusinessCaseTextBox_PreviewTextInput"/>
             <TextBox Name="filterNameTextBox" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Margin="5" HorizontalAlignment="Left" Width="250"/>
             <TextBox Name="filterSecondNameTextBox" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" Margin="5" HorizontalAlignment="Left" Width="250"/>
             <ComboBox Name="filterRegionComboBox" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4" Margin="5" HorizontalAlignment="Left" Width="250"/>
+            <ComboBox Name="filterOwnerComboBox" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5" Margin="5" HorizontalAlignment="Left" Width="250"/>
 
-            <Button Name="filterButton" Content="Vyhledat" Grid.Row="5" VerticalAlignment="Center" Padding="8 2 8 2" HorizontalAlignment="Left" Margin="15 0 0 0" Click="filterButton_Click" IsDefault="True"/>
+            <Button Name="filterButton" Content="Vyhledat" Grid.Row="6" VerticalAlignment="Center" Padding="8 2 8 2" HorizontalAlignment="Left" Margin="15 0 0 0" Click="filterButton_Click" IsDefault="True"/>
 
         </Grid>
         <!--#endregion-->
@@ -61,7 +64,7 @@
                 <DataGridTextColumn Header="Přijmení" Width="80" Binding="{Binding SecondName}"/>
                 <DataGridTextColumn Header="Telefon" Width="80" Binding="{Binding Phone}"/>
                 <DataGridTextColumn Header="Email" Width="80" Binding="{Binding Email}"/>
-                <DataGridTextColumn Header="Vlastník" Width="240" Binding="{Binding Owner}"/>
+                <DataGridTextColumn Header="Prodejce" Width="240" Binding="{Binding Owner}"/>
                 <DataGridTextColumn Header="Jízda" Width="240" Binding="{Binding Route}" x:Name="routeColumn"/>
                 <DataGridTextColumn Header="Svozová jízda" Width="240" Binding="{Binding BoardingRoute}" x:Name="boardingRouteColumn"/>
                 <DataGridTextColumn Header="Reálná jízda" Width="240" Binding="{Binding RealRoute}" x:Name="realRouteColumn"/>
@@ -115,6 +118,7 @@
                             <RowDefinition Height="35"/>
                             <RowDefinition Height="35"/>
                             <RowDefinition Height="100"/>
+                            <RowDefinition Height="35"/>
                             <RowDefinition Height="70"/>
                             <RowDefinition Height="70"/>
                             <RowDefinition Height="*"/>
@@ -125,8 +129,9 @@
                         <TextBlock Text="Telefon" VerticalAlignment="Center" Grid.Row="2"/>
                         <TextBlock Text="Email" VerticalAlignment="Center" Grid.Row="3"/>
                         <TextBlock Text="Dodatečné informace" VerticalAlignment="Center" Grid.Row="4"/>
-                        <TextBlock Text="Nástupní stanice" VerticalAlignment="Center" Grid.Row="5"/>
-                        <TextBlock Text="Výstupní stanice" VerticalAlignment="Center" Grid.Row="6"/>
+                        <TextBlock Text="Prodejce" VerticalAlignment="Center" Grid.Row="5"/>
+                        <TextBlock Text="Nástupní stanice" VerticalAlignment="Center" Grid.Row="6"/>
+                        <TextBlock Text="Výstupní stanice" VerticalAlignment="Center" Grid.Row="7"/>
 
                         <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Name="firstNameTextBox">
                             <TextBox.Text>
@@ -153,16 +158,18 @@
                                 <Binding Path="AdditionalInformation"/>
                             </TextBox.Text>
                         </TextBox>
-                        <StackPanel Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Orientation="Vertical" Margin="5">
+                        <ComboBox Grid.Row="5" Grid.Column="1" Margin="5" Name="ownerComboBox">
+                        </ComboBox>
+                        <StackPanel Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" Orientation="Vertical" Margin="5">
                             <TextBlock Name="boardingStationTextBlock" Visibility="Hidden" HorizontalAlignment="Left"/>
                             <Button Name="chooseBoardingStationButton" Content="Vybrat nástupní stanici" Margin="0 8 0 0" Padding="5 0 5 0" Click="chooseBoardingStationButton_Click"/>
                         </StackPanel>
-                        <StackPanel Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" Orientation="Vertical" Margin="5">
+                        <StackPanel Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" Orientation="Vertical" Margin="5">
                             <TextBlock Name="exitStationTextBlock" Visibility="Hidden" HorizontalAlignment="Left"/>
                             <Button Name="chooseExitStationButton" Content="Vybrat výstupní stanici" Margin="0 8 0 0" Padding="5 0 5 0" Click="chooseExitStationButton_Click"/>
                         </StackPanel>
 
-                        <Button Grid.ColumnSpan="2" Grid.Row="7" VerticalAlignment="Top" HorizontalAlignment="Center" Content="Změnit" Name="updateButton" Click="updateButton_Click">
+                        <Button Grid.ColumnSpan="2" Grid.Row="8" VerticalAlignment="Top" HorizontalAlignment="Center" Content="Změnit" Name="updateButton" Click="updateButton_Click">
                         </Button>
                     </Grid>
                 </TabItem>

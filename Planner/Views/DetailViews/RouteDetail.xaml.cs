@@ -106,6 +106,9 @@ namespace Planner.Views.DetailViews
             numberOfPassengers.Text = passengerDataGrid.Items.Count.ToString();
             filterRegionComboBox.ItemsSource = mainWindow.FilterRegions.Where(x => x.StateId == 7);
             filterRegionComboBox.SelectedIndex = 0;
+            ownerComboBox.ItemsSource = mainWindow.Owners;
+            filterOwnerComboBox.ItemsSource = mainWindow.FilterOwners;
+            filterOwnerComboBox.SelectedIndex = 0;
 
             RenderStationCounts();
             RenderExports();
@@ -128,6 +131,7 @@ namespace Planner.Views.DetailViews
                 exitStationTextBlock.Visibility = Visibility.Visible;
                 boardingStation = passenger.BoardingStation;
                 exitStation = passenger.ExitStation;
+                ownerComboBox.SelectedItem = mainWindow.Owners.FirstOrDefault(x => x.OwnerId == passenger.OwnerId);
             }
         }
         #endregion
@@ -137,7 +141,8 @@ namespace Planner.Views.DetailViews
             var region = (Region)filterRegionComboBox.SelectedItem;
             if (region.RegionId == 0)
                 region = null;
-            passengerDataGrid.ItemsSource = SortPassengersByStations(route, passengerManager.FilterPassengers(Passengers, filterIdTextBox.Text, filterBusinessCaseTextBox.Text, filterNameTextBox.Text, filterSecondNameTextBox.Text, region: region));
+            var owner = (Owner)filterOwnerComboBox.SelectedItem;
+            passengerDataGrid.ItemsSource = SortPassengersByStations(route, passengerManager.FilterPassengers(Passengers, filterIdTextBox.Text, filterBusinessCaseTextBox.Text, filterNameTextBox.Text, filterSecondNameTextBox.Text, owner, region: region));
         }
         private void filterBusinessCaseTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -151,8 +156,7 @@ namespace Planner.Views.DetailViews
         #region Update
         private void chooseBoardingStationButton_Click(object sender, RoutedEventArgs e)
         {
-            ChooseStation chooseStation = new ChooseStation(stationManager, mainWindow);
-            chooseStation.stationDataGrid.ItemsSource = mainWindow.Stations.Where(x => x.BoardingStation == true);
+            ChooseStation chooseStation = new ChooseStation(stationManager, mainWindow.Stations.Where(x => x.BoardingStation), mainWindow);
             chooseStation.ShowDialog();
             if (chooseStation.station != null)
             {
@@ -162,8 +166,7 @@ namespace Planner.Views.DetailViews
         }
         private void chooseExitStationButton_Click(object sender, RoutedEventArgs e)
         {
-            ChooseStation chooseStation = new ChooseStation(stationManager, mainWindow);
-            chooseStation.stationDataGrid.ItemsSource = mainWindow.Stations.Where(x => x.BoardingStation == false);
+            ChooseStation chooseStation = new ChooseStation(stationManager, mainWindow.Stations.Where(x => !x.BoardingStation), mainWindow);
             chooseStation.ShowDialog();
             if (chooseStation.station != null)
             {
@@ -174,10 +177,11 @@ namespace Planner.Views.DetailViews
         private void updateButton_Click(object sender, RoutedEventArgs e)
         {
             var passenger = (Passenger)passengerDataGrid.SelectedItem;
+            var owner = (Owner)ownerComboBox.SelectedItem;
 
             try
             {
-                passenger = passengerManager.Update(passenger, firstNameTextBox.Text, secondNameTextBox.Text, phoneTextBox.Text, emailTextBox.Text, additionalInfoTextBox.Text, boardingStation, exitStation);
+                passenger = passengerManager.Update(passenger, firstNameTextBox.Text, secondNameTextBox.Text, phoneTextBox.Text, emailTextBox.Text, additionalInfoTextBox.Text, boardingStation, exitStation, owner);
                 passengerDataGrid.SelectedItem = passenger;
                 passengerDataGrid.Items.Refresh();
                 RenderStationCounts();

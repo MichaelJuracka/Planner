@@ -33,9 +33,8 @@ namespace Planner.Views.AddViews
 
         #region Variables
         private Route route = null;
-        private Route boardingRoute = null;
         private Station boardingStation = null;
-        private Station exitStation = null; 
+        private Station exitStation = null;
         #endregion
         public AddPassenger(IPassengerManager passengerManager, IRouteManager routeManager, IStationManager stationManager, MainWindow mainWindow, Route route = null)
         {
@@ -46,21 +45,8 @@ namespace Planner.Views.AddViews
 
             this.route = route;
             InitializeComponent();
-            
-            if (route != null)
-            {
-                if (!route.BoardingRoute)
-                {
-                    routeTextBlock.Text = route.ToString();
-                    routeTextBlock.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    boardingRouteTextBlock.Text = route.ToString();
-                    boardingRouteTextBlock.Visibility = Visibility.Visible;
-                }
-                ownerComboBox.ItemsSource = mainWindow.Owners;
-            }
+
+            ownerComboBox.ItemsSource = mainWindow.Owners;
         }
         private void bussinesCaseTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -89,41 +75,29 @@ namespace Planner.Views.AddViews
                 }
             }
         }
-        private void chooseBoardingRouteButton_Click(object sender, RoutedEventArgs e)
-        {
-            ChooseRoute chooseRoute = new ChooseRoute(routeManager, mainWindow.Routes.Where(x => x.BoardingRoute == true), mainWindow);
-            chooseRoute.ShowDialog();
-            boardingRoute = chooseRoute.route;
-            if (chooseRoute.route != null)
-            {
-                boardingRouteTextBlock.Text = chooseRoute.route.ToString();
-                boardingRouteTextBlock.Visibility = Visibility.Visible;
-            }
-        }
         private void chooseBoardingStationButton_Click(object sender, RoutedEventArgs e)
         {
-            ChooseStation chooseStation = new ChooseStation(stationManager, mainWindow);
-            chooseStation.stationDataGrid.ItemsSource = mainWindow.Stations.Where(x => x.BoardingStation == true);
+            ChooseStation chooseStation = new ChooseStation(stationManager, mainWindow.Stations.Where(x => x.BoardingStation), mainWindow);
             chooseStation.ShowDialog();
-            boardingStation = chooseStation.station;
             if (chooseStation.station != null)
             {
+                boardingStation = chooseStation.station;
                 boardingStationTextBlock.Text = chooseStation.station.ToString();
                 boardingStationTextBlock.Visibility = Visibility.Visible;
             }
         }
         private void chooseExitStationButton_Click(object sender, RoutedEventArgs e)
         {
-            ChooseStation chooseStation = new ChooseStation(stationManager, mainWindow);
+            ChooseStation chooseStation = new ChooseStation(stationManager, mainWindow.Stations.Where(x => !x.BoardingStation), mainWindow);
             chooseStation.stationDataGrid.ItemsSource = mainWindow.Stations.Where(x => x.BoardingStation == false);
             chooseStation.ShowDialog();
-            exitStation = chooseStation.station;
             if (chooseStation.station != null)
             {
+                exitStation = chooseStation.station;
                 exitStationTextBlock.Text = chooseStation.station.ToString();
                 exitStationTextBlock.Visibility = Visibility.Visible;
             }
-        } 
+        }
         #endregion
         private void submitButton_Click(object sender, RoutedEventArgs e)
         {
@@ -140,12 +114,12 @@ namespace Planner.Views.AddViews
                     additionInfoTextBox.Text,
                     owner,
                     route,
-                    boardingRoute,
+                    null,
                     boardingStation,
                     exitStation
                     );
                 mainWindow.Passengers.Add(passenger);
-                
+
                 mainWindow.PassengersDictionary.TryGetValue(route, out var collection);
                 ObservableCollection<Passenger> passengers = new ObservableCollection<Passenger>(collection);
                 passengers.Add(passenger);
