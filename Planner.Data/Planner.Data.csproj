@@ -55,6 +55,10 @@
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="Interfaces\IBusTypeRepository.cs" />
+    <Compile Include="Interfaces\IEmailAttachmentRepository.cs" />
+    <Compile Include="Interfaces\IEmailRepository.cs" />
+    <Compile Include="Interfaces\IEmailTemplateRepository.cs" />
+    <Compile Include="Interfaces\IEmailUserRepository.cs" />
     <Compile Include="Interfaces\IExportRepository.cs" />
     <Compile Include="Interfaces\IOwnerRepository.cs" />
     <Compile Include="Interfaces\IPassengerRepository.cs" />
@@ -144,9 +148,29 @@
     <Compile Include="Migrations\202101131615441_update_owners_2.designer.cs">
       <DependentUpon>202101131615441_update_owners_2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101142126449_test.cs" />
+    <Compile Include="Migrations\202101142126449_test.designer.cs">
+      <DependentUpon>202101142126449_test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101181337364_Emails.cs" />
+    <Compile Include="Migrations\202101181337364_Emails.designer.cs">
+      <DependentUpon>202101181337364_Emails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101182243163_Emails_2.cs" />
+    <Compile Include="Migrations\202101182243163_Emails_2.designer.cs">
+      <DependentUpon>202101182243163_Emails_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101201504179_Emails_3.cs" />
+    <Compile Include="Migrations\202101201504179_Emails_3.designer.cs">
+      <DependentUpon>202101201504179_Emails_3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\InitialData.cs" />
     <Compile Include="Models\BusType.cs" />
+    <Compile Include="Models\Email\Email.cs" />
+    <Compile Include="Models\Email\EmailAttachment.cs" />
+    <Compile Include="Models\Email\EmailTemplate.cs" />
+    <Compile Include="Models\Email\EmailUser.cs" />
     <Compile Include="Models\Export.cs" />
     <Compile Include="Models\Owner.cs" />
     <Compile Include="Models\Passenger.cs" />
@@ -158,6 +182,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\BusTypeRepository.cs" />
+    <Compile Include="Repositories\EmailAttachmentRepository.cs" />
+    <Compile Include="Repositories\EmailRepository.cs" />
+    <Compile Include="Repositories\EmailTemplateRepository.cs" />
+    <Compile Include="Repositories\EmailUserRepository.cs" />
     <Compile Include="Repositories\ExportRepository.cs" />
     <Compile Include="Repositories\OwnerRepository.cs" />
     <Compile Include="Repositories\PassengerRepository.cs" />
@@ -231,6 +259,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101131615441_update_owners_2.resx">
       <DependentUpon>202101131615441_update_owners_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101142126449_test.resx">
+      <DependentUpon>202101142126449_test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101181337364_Emails.resx">
+      <DependentUpon>202101181337364_Emails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101182243163_Emails_2.resx">
+      <DependentUpon>202101182243163_Emails_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101201504179_Emails_3.resx">
+      <DependentUpon>202101201504179_Emails_3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

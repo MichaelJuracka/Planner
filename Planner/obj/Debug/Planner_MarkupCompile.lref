@@ -11,9 +11,11 @@ FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\ChooseViews\ChooseRoute.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\ChooseViews\ChooseStation.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\DetailViews\ClearanceViews\DepartureTimeView.xaml;;
+FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\DetailViews\ClearanceViews\SendEmailView.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\DetailViews\RouteDetail.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\ImportViews\ImportPassenger.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\ImportViews\ImportStation.xaml;;
+FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\SettingViews\EmailSettingsView.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\SettingViews\StationOrder.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\UserControls\OwnerUserControl.xaml;;
 FC:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\Views\UserControls\PassengerUserControl.xaml;;

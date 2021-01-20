@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Planner.Views.SettingViews"
         mc:Ignorable="d"
-        Title="StationOrder" Height="450" Width="800">
+        Title="Pořadí stanic" Height="450" Width="800">
     <Grid TextBlock.FontSize="14" TextBlock.FontWeight="Medium" Margin="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>

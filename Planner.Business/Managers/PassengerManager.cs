@@ -1,10 +1,13 @@
 ﻿using Planner.Business.Interfaces;
+using Planner.Business.Model;
 using Planner.Data.Interfaces;
 using Planner.Data.Models;
+using Planner.Data.Models.Email;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Planner.Business.Managers
 {
@@ -12,10 +15,14 @@ namespace Planner.Business.Managers
     {
         private readonly IPassengerRepository passengerRepository;
         private readonly IEmailSender emailSender;
-        public PassengerManager(IPassengerRepository passengerRepository, IEmailSender emailSender)
+        private readonly IOfficeManager officeManager;
+        private readonly IEmailManager emailManager;
+        public PassengerManager(IPassengerRepository passengerRepository, IEmailSender emailSender, IOfficeManager officeManager, IEmailManager emailManager)
         {
             this.passengerRepository = passengerRepository;
             this.emailSender = emailSender;
+            this.officeManager = officeManager;
+            this.emailManager = emailManager;
         }
         public Passenger Add(string businessCase, string firstName, string secondName, string phone, string email, string additionalInformation, Owner owner, Route route, Route boardingRoute, Station boardingStation, Station exitStation)
         {
@@ -151,9 +158,18 @@ namespace Planner.Business.Managers
                 passengerRepository.Update(passenger);
             }
         }
-        public void ClearPassenger(IEnumerable<Passenger> passengers, string body, string receiverEmail = null)
+        public void UpdateDepartureTime(Passenger passenger, string departureTime)
         {
-            List<int> businessCases = new List<int>();
+            if (departureTime.Length == 0)
+                departureTime = null;
+
+            passenger.DepartureTime = departureTime;
+            passengerRepository.Update(passenger);
+        }
+        public async Task ClearPassengers(IEnumerable<Passenger> passengers, EmailTemplate emailTemplate, EmailUser emailUser)
+        {
+            var emailContents = new List<EmailContent>();
+            var businessCases = new List<int>();
 
             foreach (var p in passengers)
             {
@@ -163,13 +179,52 @@ namespace Planner.Business.Managers
 
             foreach (var b in businessCases)
             {
-                var passenger = passengerRepository.FindByBusinessCaseEmail(b);
+                var content = new EmailContent();
+                var passenger = passengers.FirstOrDefault(x => x.BusinessCase == b);
+                string body = emailTemplate.Body;
+                string subject = emailTemplate.Subject;
 
-                string data = $"{passenger.DepartureTime}, {passenger.BoardingStation}, {passenger.BoardingStation.DeparturePlace}";
-                string message = string.Format(body, data);
+                body = body.Replace("<Planner:Passenger=DepartureTime>", passenger.DepartureTime);
+                body = body.Replace("<Planner:Passenger=BoardingStation>", passenger.BoardingStation.ToString());
+                body = body.Replace("<Planner:Station=DeparturePlace>", passenger.BoardingStation.DeparturePlace);
+                subject = subject.Replace("<Planner:Passenger=BusinessCase>", b.ToString());
+                content.Body = body;
+                content.Subject = subject;
 
-                emailSender.SendEmail("michael.juracka@email.cz", "Odbavení dopravy", body);
+                string receiverEmail;
+                if (passenger.Owner.Email == null)
+                {
+                    if (passengerRepository.FindByBusinessCaseEmail(b) == null)
+                        receiverEmail = emailUser.UserName;
+                    else
+                        receiverEmail = passengerRepository.FindByBusinessCaseEmail(b).Email;
+                }
+                else
+                    receiverEmail = passenger.Owner.Email;
+                content.ReceiverEmail = receiverEmail;
+
+                var stations = new List<Station>();
+                foreach (var p in passengers.Where(x => x.BusinessCase == b))
+                {
+                    if (!stations.Contains(p.BoardingStation))
+                        stations.Add(p.BoardingStation);
+                    p.IsCleared = true;
+                }
+                var stationDepartureTimes = new List<StationDepartureTimeClearance>();
+                foreach (var s in stations)
+                {
+                    var departurePlaces = new StationDepartureTimeClearance()
+                    {
+                        Station = s,
+                        DepartureTime = passengers.FirstOrDefault(x => x.BusinessCase == b && x.BoardingStationId == s.StationId).DepartureTime
+                    };
+                }
+                var email = emailManager.AddEmail(DateTime.Now, content.Subject, content.Body, emailUser.EmailUserId, emailTemplate.EmailTemplateId);
+                content.Attachment = officeManager.UpdateClearanceWord(b, $"{passenger.FirstName} {passenger.SecondName}", passenger.Route, stationDepartureTimes, email.EmailId);
+                emailContents.Add(content);
             }
+
+            await emailSender.SendEmails(emailContents, emailUser);
         }
         public void Delete(int passengerId)
         {

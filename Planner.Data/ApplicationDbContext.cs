@@ -1,8 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using Planner.Data.Models;
+using Planner.Data.Models.Email;
 
 namespace Planner.Data
 {
@@ -22,9 +24,21 @@ namespace Planner.Data
         public DbSet<Export> Exports { get; set; }
         public DbSet<Owner> Owners { get; set; }
 
+        public DbSet<Email> Emails { get; set; }
+        public DbSet<EmailUser> EmailUsers { get; set; }
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public DbSet<EmailAttachment> EmailAttachments { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+            //builder.Entity<Passenger>()
+            //    .HasOptional(r => r.Route)
+            //    .WithRequired()
+            //    .WillCascadeOnDelete(false);
         }
     }
 }

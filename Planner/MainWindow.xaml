@@ -58,6 +58,7 @@
                     <MenuItem Header="Přidat prodejce" Name="newOwner" Click="newOwner_Click">
                     </MenuItem>
                 </MenuItem>
+                <MenuItem Header="test" Name="test" Click="test_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="Zobrazit">
                 <MenuItem.Icon>
@@ -90,8 +91,10 @@
             <MenuItem Header="Nastavení">
                 <MenuItem.Icon>
                         <Image Source="/Images/settingIcon.ico"/>
-                    </MenuItem.Icon>
+                </MenuItem.Icon>
                 <MenuItem Header="Pořadí stanic" Name="stationOrderTabControl" Click="stationOrderTabControl_Click">
+                </MenuItem>
+                <MenuItem Header="Nastavení emailů" Name="emailSettingsTabControl" Click="emailSettingsTabControl_Click">
                 </MenuItem>
             </MenuItem>
         </Menu>

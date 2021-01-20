@@ -40,6 +40,7 @@ namespace Planner
         private readonly IExportManager exportManager;
         private readonly IOwnerManager ownerManager;
         private readonly IEmailSender emailSender;
+        private readonly IEmailManager emailManager;
 
         #region Collections
         public ObservableCollection<Station> Stations { get; set; }
@@ -48,7 +49,7 @@ namespace Planner
         public ObservableCollection<State> FilterStates { get; set; }
         public ObservableCollection<Region> Regions { get; set; }
         public ObservableCollection<Region> FilterRegions { get; set; }
-        public ObservableCollection<Provider> Providers { get; set; } 
+        public ObservableCollection<Provider> Providers { get; set; }
         public ObservableCollection<Provider> FilterProviders { get; set; }
         public ObservableCollection<BusType> BusTypes { get; set; }
         public ObservableCollection<Passenger> Passengers { get; set; }
@@ -69,7 +70,8 @@ namespace Planner
             IOfficeManager officeManager,
             IExportManager exportManager,
             IOwnerManager ownerManager,
-            IEmailSender emailSender
+            IEmailSender emailSender,
+            IEmailManager emailManager
             )
         {
             this.stationManager = stationManager;
@@ -83,6 +85,7 @@ namespace Planner
             this.exportManager = exportManager;
             this.ownerManager = ownerManager;
             this.emailSender = emailSender;
+            this.emailManager = emailManager;
 
             InitializeComponent();
 
@@ -94,7 +97,7 @@ namespace Planner
         }
         private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            FilterRegions.Insert(0, new Region() { Name = "Všechny", RegionId = 0, StateId = 7});
+            FilterRegions.Insert(0, new Region() { Name = "Všechny", RegionId = 0, StateId = 7 });
             FilterStates.Insert(0, new State() { Name = "Všechny", StateId = 0 });
             FilterProviders.Insert(0, new Provider() { Name = "Všichni", ProviderId = 0 });
             FilterOwners.Insert(0, new Owner() { Name = "Všichni", OwnerId = 0 });
@@ -223,6 +226,11 @@ namespace Planner
             StationOrder stationOrder = new StationOrder(stationManager, this);
             stationOrder.ShowDialog();
         }
+        private void emailSettingsTabControl_Click(object sender, RoutedEventArgs e)
+        {
+            EmailSettingsView emailSettingsView = new EmailSettingsView(emailManager);
+            emailSettingsView.ShowDialog();
+        }
         #endregion
         #region Helpers
         private void AddPassengersToDictionary(Route route)
@@ -235,6 +243,14 @@ namespace Planner
                 PassengersDictionary.Add(route, Passengers.Where(x => x.RouteId == route.RouteId));
         }
         #endregion
+        private async void test_Click(object sender, RoutedEventArgs e)
+        {
+            //works
+            var template = emailManager.GetAllEmailTemplates().FirstOrDefault(x => x.EmailTemplateId == 1);
+            var user = emailManager.GetAllEmailUsers().FirstOrDefault(x => x.EmailUserId == 1);
 
+            await passengerManager.ClearPassengers(Passengers.Where(x => x.RealRouteId == 49), template, user);
+            MessageBox.Show("Hotovo");
+        }
     }
 }

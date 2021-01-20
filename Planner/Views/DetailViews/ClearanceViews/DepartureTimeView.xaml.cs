@@ -32,7 +32,10 @@ namespace Planner.Views.DetailViews.ClearanceViews
 
             InitializeComponent();
 
-            RenderStations(mainWindow.Passengers.Where(x => x.RouteId == route.RouteId), route.RouteBack);
+            RenderStations(mainWindow.PassengersDictionary[route], route.RouteBack);
+
+            if (route.RouteBack)
+                sendEmailsButton.Visibility = Visibility.Hidden;
         }
         private void RenderStations(IEnumerable<Passenger> passengers, bool routeBack)
         {
@@ -40,17 +43,19 @@ namespace Planner.Views.DetailViews.ClearanceViews
 
             foreach (var p in passengers)
             {
-                if (stations.Contains(p.BoardingStation) && !routeBack)
+                if (!stations.Contains(p.BoardingStation) && !routeBack)
                     stations.Add(p.BoardingStation);
-                if (stations.Contains(p.ExitStation) && routeBack)
+                if (!stations.Contains(p.ExitStation) && routeBack)
                     stations.Add(p.ExitStation);
             }
-            
+            stations.Sort((x, y) => x.Name.CompareTo(y.Name));
+
             foreach (var s in stations)
             {
                 StackPanel stackPanel = new StackPanel()
                 {
-                    Orientation = Orientation.Horizontal
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 3, 0, 0)
                 };
                 departureTimeStackPanel.Children.Add(stackPanel);
                 TextBlock textBlock = new TextBlock()
@@ -62,14 +67,44 @@ namespace Planner.Views.DetailViews.ClearanceViews
                 TextBox textBox = new TextBox()
                 {
                     Name = "textBox" + s.StationId.ToString(),
-                    Width = 50
+                    Width = 80
                 };
-                if (s.DepartureTime != null)
-                    textBox.Text = s.DepartureTime;
+                if (!routeBack)
+                    textBox.Text = passengers.FirstOrDefault(x => x.BoardingStationId == s.StationId).DepartureTime;
+                else
+                    textBox.Text = passengers.FirstOrDefault(x => x.ExitStationId == s.StationId).DepartureTime;
                 stackPanel.Children.Add(textBox);
-                NameScope.SetNameScope(departureTimeStackPanel, new NameScope());
-                
             }
+        }
+        private void saveButton_Click(object sender, RoutedEventArgs e)
+        {
+            List<TextBox> textBoxes = new List<TextBox>();
+            foreach (StackPanel stackPanel in departureTimeStackPanel.Children)
+            {
+                foreach (var item in stackPanel.Children)
+                {
+                    if (item is TextBox textBox)
+                        textBoxes.Add(textBox);
+                }
+            }
+
+            foreach (var p in mainWindow.PassengersDictionary[route])
+            {
+                if (!route.RouteBack)
+                    passengerManager.UpdateDepartureTime(p, textBoxes.FirstOrDefault(x => int.Parse(x.Name.Replace("textBox", "")) == p.BoardingStationId).Text);
+                else
+                    passengerManager.UpdateDepartureTime(p, textBoxes.FirstOrDefault(x => int.Parse(x.Name.Replace("textBox", "")) == p.ExitStationId).Text);
+            }
+        }
+        private void sendEmailsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (route.RouteBack)
+            {
+                MessageBox.Show("na cestu zpět nelze odeslat emaily");
+                return;
+            }
+            SendEmailView sendEmailView = new SendEmailView(mainWindow.PassengersDictionary[route].Where(x => !x.IsCleared));
+            sendEmailView.ShowDialog();
         }
     }
 }

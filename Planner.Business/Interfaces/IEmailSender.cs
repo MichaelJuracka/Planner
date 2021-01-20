@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Planner.Business.Model;
+using Planner.Data.Models.Email;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,6 @@ namespace Planner.Business.Interfaces
 {
     public interface IEmailSender
     {
-        void SendEmail(string receiverEmail, string subject, string emailBody, string senderEmail = null);
+        Task SendEmails(List<EmailContent> emailContents, EmailUser emailUser);
     }
 }

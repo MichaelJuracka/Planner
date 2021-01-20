@@ -1,0 +1,92 @@
+﻿<Window x:Class="Planner.Views.SettingViews.EmailSettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Planner.Views.SettingViews"
+        mc:Ignorable="d"
+        Title="Nastavení emailů" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Šablony">
+                <Grid Margin="5">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="35"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="240"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <DataGrid AutoGenerateColumns="False" Name="emailTemplateDataGrid" SelectionMode="Single" Grid.RowSpan="6" IsReadOnly="True" AlternatingRowBackground="LightGray" Margin="0 0 0 8" SelectionChanged="emailTemplateDataGrid_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id" Binding="{Binding EmailTemplateId}" Width="40"/>
+                                <DataGridTextColumn Header="Název" Binding="{Binding Name}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <TextBlock Text="Název šablony" Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Margin="8 0 0 0" FontSize="14" FontWeight="Medium"/>
+                        <TextBox Name="templateNameTextBox" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="8 0 8 0" FontSize="14" FontWeight="Medium"/>
+                        <TextBlock Text="Předmět emailu" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="8 0 8 0" FontSize="14" FontWeight="Medium"/>
+                        <TextBox Name="templateSubjectTextBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="8 0" FontSize="14" FontWeight="Medium"/>
+                        <TextBlock Text="Tělo emailu" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="8 0 0 0" FontSize="14" FontWeight="Medium"/>
+                        <TextBox Name="templateBodyTextBox" Grid.Row="5" Grid.Column="1" Margin="8 0 8 8" FontSize="14" FontWeight="Medium" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto"/>
+
+                        <Button Name="addTemplateTextBox" Grid.Row="6" Grid.Column="0" Content="Přidat novou šablonu" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 0 0" Padding="5 0" FontSize="14" FontWeight="Medium" Click="addTemplateTextBox_Click"/>
+                        <Button Name="updateTemplateTextBox" Grid.Row="6" Grid.Column="1" Content="Uložit" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10 0 0 0" Padding="5 0" FontSize="14" FontWeight="Medium" Click="updateTemplateTextBox_Click" IsEnabled="False"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Uživatelé">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="245"/>
+                        <ColumnDefinition Width="85"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid AutoGenerateColumns="False" Name="emailUserDataGrid" SelectionMode="Single" Grid.RowSpan="5" IsReadOnly="True" AlternatingRowBackground="LightGray" Margin="0 0 5 0" SelectionChanged="emailUserDataGrid_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id" Binding="{Binding EmailUserId}" Width="30"/>
+                            <DataGridTextColumn Header="Název" Binding="{Binding UserName}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Text="Email:" VerticalAlignment="Bottom" Margin="0 0 0 5" Grid.Column="1" Grid.Row="0" FontSize="14" FontWeight="Medium"/>
+                    <TextBlock Text="Heslo:" VerticalAlignment="Bottom" Margin="0 0 0 5" Grid.Column="1" Grid.Row="1" FontSize="14" FontWeight="Medium"/>
+                    <TextBlock Text="Smtp Server:" VerticalAlignment="Bottom" Margin="0 0 0 5" Grid.Column="1" Grid.Row="2" FontSize="14" FontWeight="Medium"/>
+                    <TextBlock Text="Smtp Port:" VerticalAlignment="Bottom" Margin="0 0 0 5" Grid.Column="1" Grid.Row="3" FontSize="14" FontWeight="Medium"/>
+                    <TextBlock Text="Default:" VerticalAlignment="Bottom" Margin="0 0 0 5" Grid.Column="1" Grid.Row="4" FontSize="14" FontWeight="Medium"/>
+
+                    <TextBox Grid.Row="0" Grid.Column="2" VerticalAlignment="Bottom" Margin="0 0 0 5" Name="emailUserNameTextBox" FontSize="14" FontWeight="Medium" Width="220" HorizontalAlignment="Left"/>
+                    <TextBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" Margin="0 0 0 5" Name="emailPasswordTextBox" FontSize="14" FontWeight="Medium" Width="220" HorizontalAlignment="Left"/>
+                    <TextBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Bottom" Margin="0 0 0 5" Name="smtpServerTextBox" FontSize="14" FontWeight="Medium" Width="220" HorizontalAlignment="Left"/>
+                    <TextBox Grid.Row="3" Grid.Column="2" VerticalAlignment="Bottom" Margin="0 0 0 5" Name="smtpPortTextBox" FontSize="14" FontWeight="Medium" Width="60" HorizontalAlignment="Left" PreviewTextInput="smtpPortTextBox_PreviewTextInput"/>
+                    <CheckBox Grid.Row="4" Grid.Column="2" VerticalAlignment="Bottom" Margin="0 0 0 5" Name="userDefaultCheckbox" />
+
+                    <Button Name="addUserButton" Grid.Row="5" Grid.Column="0" Content="Přidat nového uživatele" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 0 0" Padding="5 0" FontSize="14" FontWeight="Medium" Click="addUserButton_Click"/>
+                    <Button Name="updateUserButton" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="Uložit" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 0 0" Padding="5 0" FontSize="14" FontWeight="Medium" Click="updateUserButton_Click" IsEnabled="False"/>
+                </Grid>
+
+
+            </TabItem>
+        </TabControl>
+        
+    </Grid>
+</Window>

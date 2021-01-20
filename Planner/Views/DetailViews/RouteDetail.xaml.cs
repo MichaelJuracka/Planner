@@ -323,8 +323,8 @@ namespace Planner.Views.DetailViews
         private void clearanceButton_Click(object sender, RoutedEventArgs e)
         {
             DepartureTimeView departureTimeView = new DepartureTimeView(passengerManager, mainWindow, route);
-
-            MessageBox.Show("Not implemented yet");
+            departureTimeView.ShowDialog();
+            //MessageBox.Show("Not implemented yet");
         }
         #endregion
         #region Create
@@ -620,16 +620,16 @@ namespace Planner.Views.DetailViews
             if (route.BoardingRoute)
             {
                 if (!route.RouteBack)
-                    orderedCollection = collection.OrderBy(x => x.BoardingStation.Order).ThenBy(x => x.BusinessCase);
+                    orderedCollection = collection.OrderBy(x => x.BoardingStation.Order).ThenByDescending(x => x.BusinessCase);
                 else
-                    orderedCollection = collection.OrderByDescending(x => x.BoardingStation.Order).ThenBy(x => x.BusinessCase);
+                    orderedCollection = collection.OrderByDescending(x => x.BoardingStation.Order).ThenByDescending(x => x.BusinessCase);
             }
             else
             {
                 if (!route.RouteBack)
-                    orderedCollection = collection.OrderBy(x => x.ExitStation.Order).ThenBy(x => x.BusinessCase);
+                    orderedCollection = collection.OrderBy(x => x.ExitStation.Order).ThenByDescending(x => x.BusinessCase);
                 else
-                    orderedCollection = collection.OrderByDescending(x => x.ExitStation.Order).ThenBy(x => x.BusinessCase);
+                    orderedCollection = collection.OrderByDescending(x => x.ExitStation.Order).ThenByDescending(x => x.BusinessCase);
             }
             return orderedCollection;
         }

@@ -6,40 +6,59 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using Planner.Business.Model;
+using Planner.Data.Models.Email;
 
 namespace Planner.Business.Services
 {
     public class EmailSender : IEmailSender
     {
-        private readonly string smtpServer = "lin.csad-tisnov.cz";
-        private readonly int smtpPort = 587;
-        private readonly string userName = "doprava-brno@csad-tisnov.cz";
-        private readonly string password = "dc4deldc";
         private const string emailSender = "doprava-brno@csad-tisnov.cz";
-        public void SendEmail(string receiverEmail, string subject, string emailBody, string senderEmail = null)
+        public async Task SendEmails(List<EmailContent> emailContents, EmailUser emailUser)
         {
-            var message = new MimeMessage();
-            message.To.Add(new MailboxAddress(receiverEmail));
-            message.From.Add(new MailboxAddress(senderEmail ?? emailSender));
+            var messages = new List<MimeMessage>();
 
-            message.Subject = subject;
-
-            message.Body = new TextPart(TextFormat.Html)
+            foreach(var content in emailContents)
             {
-                Text = emailBody
-            };
-
-            using (var emailClient = new MailKit.Net.Smtp.SmtpClient())
+                var message = new MimeMessage();
+                message.To.Add(new MailboxAddress(content.ReceiverEmail));
+                message.From.Add(new MailboxAddress(emailUser.UserName ?? emailSender));
+                message.Subject = content.Subject;
+                var attachment = new MimePart()
+                {
+                    Content = new MimeContent(new MemoryStream(content.Attachment.Data), ContentEncoding.Default),
+                    ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
+                    ContentTransferEncoding = ContentEncoding.Base64,
+                    FileName = content.Attachment.Name
+                };
+                var builder = new BodyBuilder()
+                {
+                    HtmlBody = content.Body,
+                };
+                builder.Attachments.Add(attachment);
+                message.Body = builder.ToMessageBody();
+                messages.Add(message);
+            }
+            try
             {
-                emailClient.Connect(smtpServer, smtpPort);
-
-                emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
-
-                emailClient.Authenticate(userName, password);
-
-                emailClient.Send(message);
-
-                emailClient.Disconnect(true);
+                await SendMessages(messages, emailUser);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        private async Task SendMessages(List<MimeMessage> messages, EmailUser emailUser)
+        {
+            using (var client = new MailKit.Net.Smtp.SmtpClient())
+            {
+                await client.ConnectAsync(emailUser.SmtpServer, emailUser.SmtpPort);
+                client.AuthenticationMechanisms.Remove("XOAUTH2");
+                await client.AuthenticateAsync(emailUser.UserName, emailUser.PassWord);
+                foreach (var message in messages)
+                    await client.SendAsync(message);
+                await client.DisconnectAsync(true);
             }
         }
     }

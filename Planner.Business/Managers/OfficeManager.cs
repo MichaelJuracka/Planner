@@ -1,7 +1,9 @@
 ﻿using ExcelDataReader;
 using Planner.Business.Interfaces;
+using Planner.Business.Model;
 using Planner.Data.Interfaces;
 using Planner.Data.Models;
+using Planner.Data.Models.Email;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,13 +20,15 @@ namespace Planner.Business.Managers
         private readonly IStationRepository stationRepository;
         private readonly IExportManager exportManager;
         private readonly IOwnerManager ownerManager;
+        private readonly IEmailManager emailManager;
 
-        public OfficeManager(IPassengerRepository passengerRepository, IStationRepository stationRepository, IExportManager exportManager, IOwnerManager ownerManager)
+        public OfficeManager(IPassengerRepository passengerRepository, IStationRepository stationRepository, IExportManager exportManager, IOwnerManager ownerManager, IEmailManager emailManager)
         {
             this.passengerRepository = passengerRepository;
             this.stationRepository = stationRepository;
             this.exportManager = exportManager;
             this.ownerManager = ownerManager;
+            this.emailManager = emailManager;
         }
         #region Import
         public List<Passenger> ImportPassengers(string filePath, Route route, IEnumerable<Station> boardingStations, IEnumerable<Station> exitStations, ObservableCollection<Owner> owners)
@@ -60,8 +64,8 @@ namespace Planner.Business.Managers
                                 phone = phone.Substring(4);
                         }
                         string addtionalInformation = null;
-                        if (reader.GetValue(8) != null)
-                            addtionalInformation = reader.GetValue(8).ToString();
+                        if (reader.GetValue(9) != null)
+                            addtionalInformation = reader.GetValue(9).ToString();
 
                         var owner = owners.FirstOrDefault(x => x.Name.ToLower() == reader.GetValue(7).ToString().ToLower());
                         if (owner == null)
@@ -69,11 +73,6 @@ namespace Planner.Business.Managers
                             owner = ownerManager.Add(reader.GetValue(7).ToString(), null);
                             owners.Add(owner);
                         }
-
-
-                        //string owner;
-                        //if (reader.GetValue(7) != null)
-                        //    owner = reader.GetValue(7).ToString();
 
                         if (route == null)
                             throw new ArgumentException("Vyberte jízdu");
@@ -84,6 +83,13 @@ namespace Planner.Business.Managers
                         if (exitStation == null)
                             throw new ArgumentException($"chyba na řádku! {reader.GetValue(0)}, výstupní stanice");
 
+                        bool isCleared = false;
+                        if (reader.GetValue(8) != null && !route.RouteBack)
+                        {
+                            if (!reader.GetValue(8).ToString().Contains("HRD"))
+                                isCleared = true;
+                        }
+
                         var passenger = new Passenger()
                         {
                             BusinessCase = businessCase,
@@ -92,7 +98,7 @@ namespace Planner.Business.Managers
                             Phone = phone,
                             AdditionalInformation = addtionalInformation,
                             RouteId = route.RouteId,
-                            IsCleared = false,
+                            IsCleared = isCleared,
                             SeatNumber = null,
                             BoardingStationId = boardingStation.StationId,
                             ExitStationId = exitStation.StationId,
@@ -566,6 +572,44 @@ namespace Planner.Business.Managers
             var file = File.ReadAllBytes(filePath);
 
             exportManager.Add(file, fileName + ".doc", route.RouteId);
+        }
+        public EmailAttachment UpdateClearanceWord(int businessCase, string name, Route route, IEnumerable<StationDepartureTimeClearance> departurePlaces, int emailId)
+        {
+            string templatePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            templatePath += @"\Templates\odbaveniTemplate.docx";
+
+            var wordApp = new Word.Application();
+            wordApp.Visible = false;
+            wordApp.DisplayAlerts = Word.WdAlertLevel.wdAlertsNone;
+            var document = wordApp.Documents.Open(templatePath);
+
+            WordFindAndReplace(wordApp, "<op>", businessCase.ToString());
+            WordFindAndReplace(wordApp, "<linka>", route.Region.ToString());
+            WordFindAndReplace(wordApp, "<jmeno>", name);
+            WordFindAndReplace(wordApp, "<datumodjezdu>", route.DepartureDate.ToShortDateString());
+            string departureText = "";
+            foreach (var s in departurePlaces)
+            {
+                departureText += $"{s.DepartureTime} {s.Station.Name}, {s.Station.DeparturePlace}, GPS: {s.Station.Gps}";
+            }
+            WordFindAndReplace(wordApp, "<mistoodjezdu>", departureText);
+
+            string fileName = $"Odbavení dopravy {businessCase}.pdf";
+            document.ExportAsFixedFormat(fileName, Word.WdExportFormat.wdExportFormatPDF);
+            document.Close();
+            wordApp.Quit();
+
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var filePath = Path.Combine(path, fileName);
+
+            var file = File.ReadAllBytes(filePath);
+
+            var attachment = emailManager.AddAttachment(fileName, file, emailId);
+
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+
+            return attachment;
         }
         private void WordFindAndReplace(Word.Application wordApp, object findText, object replaceText)
         {

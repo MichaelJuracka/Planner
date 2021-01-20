@@ -118,3 +118,7 @@ C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\obj\De
 C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\obj\Debug\Views\AddViews\AddOwner.baml
 C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\obj\Debug\Views\UserControls\OwnerUserControl.g.cs
 C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\obj\Debug\Views\UserControls\OwnerUserControl.baml
+C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\obj\Debug\Views\DetailViews\ClearanceViews\SendEmailView.g.cs
+C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\obj\Debug\Views\DetailViews\ClearanceViews\SendEmailView.baml
+C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\obj\Debug\Views\SettingViews\EmailSettingsView.g.cs
+C:\Users\Michael Juračka\Desktop\MujProjekt-RoutePlanner\Planner\Planner\obj\Debug\Views\SettingViews\EmailSettingsView.baml

@@ -100,8 +100,6 @@ namespace Planner.Views.SettingViews
                 orderTextBox.PreviewTextInput += OrderTextBox_PreviewTextInput;
 
                 stackPanel.Children.Add(orderTextBox);
-                NameScope.SetNameScope(stationStackPanel, new NameScope());
-                stationStackPanel.RegisterName(orderTextBox.Name, orderTextBox);
                 stationStackPanel.Children.Add(stackPanel);
             }
         }

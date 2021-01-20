@@ -1,4 +1,6 @@
-﻿using Planner.Data.Models;
+﻿using Planner.Business.Model;
+using Planner.Data.Models;
+using Planner.Data.Models.Email;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -11,5 +13,6 @@ namespace Planner.Business.Interfaces
         void RouteList(IEnumerable<Passenger> passengers, string filePath, int routeId, string fileName, bool isRealRoute);
         void UpdateOrder(string filePath, string fileName, Route route, IEnumerable<Passenger> passengers, IEnumerable<Passenger> passengersBack);
         void UpdateOrderWord(string filePath, string fileName, Route route, IEnumerable<Passenger> passengers);
+        EmailAttachment UpdateClearanceWord(int businessCase, string name, Route route, IEnumerable<StationDepartureTimeClearance> departurePlaces, int emailId);
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Planner.Data.Models;
+using Planner.Data.Models.Email;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace Planner.Business.Interfaces
 {
@@ -13,7 +15,8 @@ namespace Planner.Business.Interfaces
         Passenger Update(Passenger passenger, string firstName, string secondName, string phone, string email, string additionalInformation, Station boardingStation, Station exitStation, Owner owner);
         void UpdateRoute(Passenger passenger, Route route, bool isRealRoute, bool boardingRoute);
         void RemoveRoute(Passenger passenger, bool isRealRoute, bool boardingRoute);
-        void ClearPassenger(IEnumerable<Passenger> passengers, string body, string receiverEmail = null);
+        void UpdateDepartureTime(Passenger passenger, string departureTime);
         void Delete(int passengerId);
+        Task ClearPassengers(IEnumerable<Passenger> passengers, EmailTemplate emailTemplate, EmailUser emailUser);
     }
 }

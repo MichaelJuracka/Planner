@@ -62,6 +62,7 @@ namespace Planner.Views.UserControls
         {
             if (routeDataGrid.SelectedItem is Route selectedRoute)
             {
+                passengerCountTextBlock.Text = $"Počet osob: {mainWindow.PassengersDictionary[selectedRoute].Count()}";
                 licensePlateTextBox.Text = selectedRoute.LicensePlate;
                 busTypeComboBox.ItemsSource = mainWindow.BusTypes;
                 busTypeComboBox.SelectedItem = mainWindow.BusTypes.SingleOrDefault(x => x.BusTypeId == selectedRoute.BusTypeId);

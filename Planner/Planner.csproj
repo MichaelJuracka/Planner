@@ -173,6 +173,9 @@
     <Compile Include="Views\DetailViews\ClearanceViews\DepartureTimeView.xaml.cs">
       <DependentUpon>DepartureTimeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DetailViews\ClearanceViews\SendEmailView.xaml.cs">
+      <DependentUpon>SendEmailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DetailViews\RouteDetail.xaml.cs">
       <DependentUpon>RouteDetail.xaml</DependentUpon>
     </Compile>
@@ -181,6 +184,9 @@
     </Compile>
     <Compile Include="Views\ImportViews\ImportStation.xaml.cs">
       <DependentUpon>ImportStation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingViews\EmailSettingsView.xaml.cs">
+      <DependentUpon>EmailSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingViews\StationOrder.xaml.cs">
       <DependentUpon>StationOrder.xaml</DependentUpon>
@@ -252,6 +258,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\DetailViews\ClearanceViews\SendEmailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DetailViews\RouteDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -261,6 +271,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImportViews\ImportStation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingViews\EmailSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -313,6 +327,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Templates\odbaveniTemplate.docx" />
     <None Include="Templates\orderWordRozvozTemplate.doc" />
     <None Include="Templates\orderWordSvozTemplate.doc" />
     <None Include="Templates\orderExcelTemplate.xls" />
@@ -367,9 +382,6 @@
     <Resource Include="Images\stationIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\importPng.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\importPngStation.png" />
   </ItemGroup>
   <ItemGroup>
@@ -384,7 +396,9 @@
   <ItemGroup>
     <Resource Include="Images\settingIcon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\importPng.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
